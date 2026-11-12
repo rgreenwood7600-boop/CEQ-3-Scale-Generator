@@ -30,10 +30,10 @@
 </div>
 <div class="actions">
 <button type="button" id="generateButton">Generate Scales</button>
-<button type="button" id="downloadButton" class="secondary">Download PDF</button>
+<button type="button" id="downloadButton" class="secondary">Download Word</button>
 </div>
 </div>
-<p class="download-note">Download PDF saves the examiner’s marksheet. These scales are filled in. Pieces, sight reading, transposition and the score boxes are left blank for the examiner.</p>
+<p class="download-note">Download Word saves the examiner’s marksheet. These scales are filled in. Pieces, sight reading, transposition and the score boxes are left blank for the examiner.</p>
 </div>
 
 <main id="main">
@@ -80,7 +80,8 @@
 <section class="instructions" aria-labelledby="instructionsHeading">
 <h2 id="instructionsHeading">Instructions</h2>
 <p>Record all technical exercises in the order shown below. Submit this assessment sheet alongside the video recording. All exercises must be performed using the indicated articulation and tempo requirements.</p>
-<p><strong>Tempo Guidance:</strong> All tempi are shown in crotchet beats per minute (♩ = BPM).</p>
+<p><strong>Tempo guidance:</strong> Scales, chromatic scales, whole-tone scales, and dominant and diminished 7ths are in crotchet beats (♩ = BPM). Arpeggios are in dotted crotchet beats (♩. = BPM).</p>
+<p><strong>Dominant 7ths:</strong> Resolve to the tonic, with the leading note rising to the tonic.</p>
 </section>
 
 <section class="block" aria-labelledby="scalesHeading">
@@ -122,9 +123,7 @@
 </noscript>
 
 <script src="Database-v5.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
-<script src="download-pdf.js"></script>
+<script src="download-docx.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
