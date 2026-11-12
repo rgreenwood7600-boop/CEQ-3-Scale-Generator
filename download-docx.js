@@ -335,6 +335,29 @@ function scoreBox(maximum) {
     ], { align: "right", pad: 40, side: 60 });
 }
 
+function tempoGuidance(sheet) {
+    function find(name) {
+        var match = (sheet.rows || []).filter(function (row) {
+            return row.cells && row.cells[0] && row.cells[0].text === name && row.cells.length >= 4;
+        })[0];
+        return match && match.cells[3] ? match.cells[3].text : "";
+    }
+    var scales = find("Major Scale");
+    var arpeggios = find("Major Arpeggio");
+    var sevenths = find("Dominant 7th");
+    var parts = [];
+    if (scales) {
+        parts.push("Scales, chromatic and whole tone " + scales);
+    }
+    if (arpeggios) {
+        parts.push("Arpeggios " + arpeggios);
+    }
+    if (sevenths) {
+        parts.push("Dominant and diminished 7ths " + sevenths);
+    }
+    return parts.length ? parts.join(". ") + "." : "";
+}
+
 function generatedScale(sheet, index) {
     var row = sheet.rows[index];
     if (!row || row.cells.length < 5) {
@@ -411,7 +434,7 @@ function buildDocumentXml(sheet) {
     var generatedIndex = 0;
 
     MARKSHEET_SCALES.forEach(function (section) {
-        section.comments.forEach(function (comment, index) {
+        section.comments.forEach(function (_comment, index) {
             var generated = generatedScale(sheet, generatedIndex);
             generatedIndex += 1;
             var discipline = cell(
@@ -426,7 +449,7 @@ function buildDocumentXml(sheet) {
                 cell([plain(generated.note, { size: 16 })], { width: SCALE[1] }) +
                 cell([plain(generated.octaves, { size: 16 })], { width: SCALE[2] }) +
                 cell([plain(generated.articulation, { size: 16 })], { width: SCALE[3] }) +
-                cell([plain(comment, { size: 16, color: "3E4C5A" })], { width: SCALE[4] }) +
+                cell([plain(" ")], { width: SCALE[4] }) +
                 cell([plain(" ")], { width: SCALE[5] }),
                 { height: 340 }
             ));
@@ -434,7 +457,16 @@ function buildDocumentXml(sheet) {
     });
 
     blocks.push(table(SCALE, scaleRows, { pad: 30, side: 40 }));
-    blocks.push(gap());
+    var tempoLine = tempoGuidance(sheet);
+    if (tempoLine) {
+        blocks.push(paragraph([
+            run(tempoLine, { size: 18, color: "1C2430" })
+        ], { before: 120, after: 40 }));
+    }
+    blocks.push(paragraph([
+        run("Dominant 7ths: ", { bold: true, size: 18, color: "1C2430" }),
+        run("Resolve to the tonic, with the leading note rising to the tonic.", { size: 18, color: "1C2430" })
+    ], { after: 80 }));
     blocks.push(table([1600, 900], [
         tableRow(
             cell([plain("Mark", { bold: true, size: 20 })], { width: 1600 }) +

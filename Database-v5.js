@@ -1043,9 +1043,9 @@ const database = {
 },
     "French Horn": {
         "tempos": {
-            "scales": "72-84",
-            "arpeggios": "36-42",
-            "dominantAndDiminished": "54-60"
+            "scales": "84-96",
+            "arpeggios": "40-44",
+            "dominantAndDiminished": "60-66"
         },
         "articulations": [
             "Slurred",
@@ -1378,101 +1378,101 @@ const database = {
         ],
         "clef": "Treble",
         "major": {
-            "C": "12th",
+            "C": "2",
             "C#/Db": "12th",
             "D": "12th",
             "D#/Eb": "12th",
-            "E": "2",
-            "F": "2",
+            "E": "12th",
+            "F": "12th",
             "F#/Gb": "2",
             "G": "2",
             "G#/Ab": "2",
             "A": "2",
             "Bb": "2",
-            "B": "12th"
+            "B": "2"
         },
         "harmonicMinor": {
-            "C": "12th",
+            "C": "2",
             "C#/Db": "12th",
             "D": "12th",
             "D#/Eb": "12th",
-            "E": "2",
-            "F": "2",
+            "E": "12th",
+            "F": "12th",
             "F#/Gb": "2",
             "G": "2",
             "G#/Ab": "2",
             "A": "2",
             "Bb": "2",
-            "B": "12th"
+            "B": "2"
         },
         "melodicMinor": {
-            "C": "12th",
+            "C": "2",
             "C#/Db": "12th",
             "D": "12th",
             "D#/Eb": "12th",
-            "E": "2",
-            "F": "2",
+            "E": "12th",
+            "F": "12th",
             "F#/Gb": "2",
             "G": "2",
             "G#/Ab": "2",
             "A": "2",
             "Bb": "2",
-            "B": "12th"
+            "B": "2"
         },
         "majorArpeggio": {
-            "C": "12th",
+            "C": "2",
             "C#/Db": "12th",
             "D": "12th",
             "D#/Eb": "12th",
-            "E": "2",
-            "F": "2",
+            "E": "12th",
+            "F": "12th",
             "F#/Gb": "2",
             "G": "2",
             "G#/Ab": "2",
             "A": "2",
             "Bb": "2",
-            "B": "12th"
+            "B": "2"
         },
         "minorArpeggio": {
-            "C": "12th",
+            "C": "2",
             "C#/Db": "12th",
             "D": "12th",
             "D#/Eb": "12th",
-            "E": "2",
-            "F": "2",
+            "E": "12th",
+            "F": "12th",
             "F#/Gb": "2",
             "G": "2",
             "G#/Ab": "2",
             "A": "2",
             "Bb": "2",
-            "B": "12th"
+            "B": "2"
         },
         "chromatic": {
-            "E": "2",
-            "F": "2",
+            "C": "2",
             "F#/Gb": "2",
             "G": "2",
             "G#/Ab": "2",
             "A": "2",
-            "Bb": "2"
+            "Bb": "2",
+            "B": "2"
         },
         "dominant7th": {
             "C": "2",
             "C#/Db": "2",
             "D": "2",
             "D#/Eb": "2",
+            "E": "2",
+            "F": "2",
+            "B": "2"
+        },
+        "diminished7th": {
             "A": "2",
             "Bb": "2",
             "B": "2"
         },
-        "diminished7th": {
-            "G": "2",
-            "G#/Ab": "2",
-            "A": "2"
-        },
         "wholeTone": {
-            "A": "2",
-            "Bb": "2"
+            "B": "2",
+            "C": "2"
         }
     },
     "Eb Tuba (Bass Clef)": {
@@ -1782,9 +1782,9 @@ const database = {
             "Bb": "2",
             "B": "2",
             "C": "2",
-            "F": "2",
             "F#/Gb": "2",
-            "G": "2"
+            "G": "2",
+            "G#/Ab": "2"
         },
         "dominant7th": {
             "B": "2",
@@ -1796,9 +1796,9 @@ const database = {
             "F": "2"
         },
         "diminished7th": {
-            "F": "2",
             "F#/Gb": "2",
-            "G": "2"
+            "G": "2",
+            "G#/Ab": "2"
         },
         "wholeTone": {
             "B": "2",

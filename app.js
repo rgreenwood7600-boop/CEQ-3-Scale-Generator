@@ -125,6 +125,16 @@ function randomItem(items) {
     return items[Math.floor(Math.random() * items.length)];
 }
 
+function formatTempo(tempoKey, value) {
+    if (!value) {
+        return "";
+    }
+    if (tempoKey === "arpeggios") {
+        return "♩. = " + value;
+    }
+    return "♩ = " + value;
+}
+
 function formatRange(octaves) {
     if (octaves === "12th") {
         return "To the 12th";
@@ -193,7 +203,7 @@ function buildRows(instrument) {
 
     EXERCISE_PLAN.forEach((section, sectionIndex) => {
         const chosen = selectUnique(instrument[section.sourceKey], section.count);
-        const tempo = (instrument.tempos && instrument.tempos[section.tempoKey]) || "";
+        const tempo = formatTempo(section.tempoKey, instrument.tempos && instrument.tempos[section.tempoKey]);
 
         if (chosen.length === 0) {
             rows.push({

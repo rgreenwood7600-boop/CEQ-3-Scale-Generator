@@ -20,7 +20,7 @@ Keep these files together. The page loads `styles.css`, `app.js`, `download-docx
 1. Choose an instrument. The list is grouped into woodwind, brass and percussion.
 2. Press **Generate Scales**.
 3. Fill in number, rank, name, date and band. These details stay put if you generate another list.
-4. Record the exercises from the top of the table, using the articulation and tempo on each row. Tempi are crotchet beats per minute.
+4. Record the exercises from the top of the table, using the articulation and tempo on each row. Scales and 7ths are in crotchet beats. Arpeggios are in dotted crotchet beats. Dominant 7ths resolve to the tonic, with the leading note rising to the tonic.
 5. Press **Download Word**. That saves a `.docx` marksheet. The scales from this page are written into the scale boxes. Pieces or songs, sight reading, transposition, the score boxes, the mark summary and the examiner’s signature are left blank. Open it in Word.
 
 Generating again keeps the candidate details, replaces the scale list, and creates a new assessment ID.
@@ -46,5 +46,5 @@ Only notes saved for that instrument can come up. A range is either a number of 
 - `index.html` — the sheet
 - `styles.css` — how it looks on a computer and on a phone
 - `app.js` — choosing the exercises and filling in the sheet
-- `download-docx.js` — saving the sheet as a Word document
+- `download-docx.js` — saving the examiner’s marksheet as a Word document
 - `Database-v5.js` — the scale lists (left as they are)
