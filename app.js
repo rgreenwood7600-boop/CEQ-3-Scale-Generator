@@ -259,7 +259,7 @@ function downloadAssessment() {
         const filename = downloadScaleSheet();
         announce("Downloaded " + filename + ".");
     } catch (error) {
-        announce("The Word document could not be created. Reload the page and try again.");
+        announce("The PDF could not be created. Check your connection and try again.");
     }
 }
 
