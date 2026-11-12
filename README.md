@@ -1,1 +1,50 @@
-# CEQ-3-Scale-Generator-Woodwind-Brass-Percussion 
+# CEQ-3 Scale Generator
+
+A one-page tool for building an ARB Class 3 scales sheet at the Royal Military School of Music. It covers brass, woodwind and percussion.
+
+You choose an instrument and press **Generate Scales**. The page makes a list of scales and arpeggios for that instrument, each with a starting note, a range, a tempo and an articulation, and it gives the sheet a new assessment ID. Fill in the candidate’s details, then download the sheet as a Word document to go with the video recording.
+
+The notes, ranges, tempi and articulations come from `Database-v5.js`. The page does not change that list.
+
+## Open it
+
+Nothing to install, and there is no build step.
+
+- Open `index.html` in a browser, or
+- Publish this folder as a static site. It works on GitHub Pages when the site serves the folder that contains `index.html`.
+
+Keep these files together. The page loads `styles.css`, `app.js`, `download-docx.js` and `Database-v5.js` from the same folder. The Word file is built in the browser. It does not need a server or an internet connection.
+
+## How to use it
+
+1. Choose an instrument. The list is grouped into woodwind, brass and percussion.
+2. Press **Generate Scales**.
+3. Fill in number, rank, name, date and band. These details stay put if you generate another list.
+4. Record the exercises from the top of the table, using the articulation and tempo on each row. Tempi are crotchet beats per minute.
+5. Press **Download Word**. That saves a `.docx` file of the sheet as it looks now, including the candidate details and the scale list. Open it in Word.
+
+Generating again keeps the candidate details, replaces the scale list, and creates a new assessment ID.
+
+## What each sheet contains
+
+For every instrument the page draws, with no repeated note inside a group:
+
+- 5 major scales
+- 2 harmonic minor scales
+- 2 melodic minor scales
+- 1 chromatic scale
+- 2 major arpeggios
+- 2 minor arpeggios
+- 2 dominant 7ths
+- 2 diminished 7ths
+- 2 whole-tone scales
+
+Only notes saved for that instrument can come up. A range is either a number of octaves or “To the 12th”. Whole-tone scales, chromatic scales and the other scales share the scale tempo. Arpeggios use the arpeggio tempo. Dominant 7ths and diminished 7ths use their own tempo.
+
+## Files
+
+- `index.html` — the sheet
+- `styles.css` — how it looks on a computer and on a phone
+- `app.js` — choosing the exercises and filling in the sheet
+- `download-docx.js` — saving the sheet as a Word document
+- `Database-v5.js` — the scale lists (left as they are)

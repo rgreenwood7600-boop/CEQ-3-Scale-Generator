@@ -2,595 +2,126 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Build an ARB Class 3 scales sheet for woodwind, brass and percussion at the Royal Military School of Music.">
+<meta name="theme-color" content="#002147">
+<meta name="color-scheme" content="light">
 <title>RMSM ARB Class 3 Scales Generator</title>
-
-<script src="Database-v5.js"></script>
-
-<style>
-
-:root{
-    --navy:#002147;
-    --light-blue:#dce6f1;
-    --background:#f4f6f8;
-    --paper:#ffffff;
-}
-
-body{
-    font-family: Arial, sans-serif;
-    background:var(--background);
-    margin:0;
-    padding:30px;
-}
-
-.container{
-    max-width:1100px;
-    margin:auto;
-    background:var(--paper);
-    padding:40px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.15);
-}
-
-.header{
-    text-align:center;
-    border-bottom:3px solid var(--navy);
-    padding-bottom:20px;
-    margin-bottom:25px;
-}
-
-.header h1{
-    margin:0;
-    color:var(--navy);
-    font-size:32px;
-}
-
-.header h2{
-    margin:8px 0;
-    color:#444;
-    font-size:24px;
-}
-
-.header h3{
-    margin:0;
-    font-weight:normal;
-    color:#555;
-}
-
-.controls{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:25px;
-    flex-wrap:wrap;
-}
-
-.controls label{
-    font-weight:bold;
-}
-
-select{
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:4px;
-}
-
-button{
-    background:var(--navy);
-    color:white;
-    border:none;
-    padding:10px 16px;
-    border-radius:4px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-button:hover{
-    background:#003a73;
-}
-
-.assessment-id{
-    background:var(--navy);
-    color:white;
-    padding:12px 16px;
-    display:inline-block;
-    border-radius:4px;
-    margin-bottom:20px;
-    font-weight:bold;
-}
-
-.section-title{
-    color:var(--navy);
-    font-weight:bold;
-    margin-bottom:10px;
-}
-
-.details-table,
-.assessment-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-.details-table td,
-.assessment-table th,
-.assessment-table td{
-    border:1px solid #000;
-    padding:8px;
-}
-
-.details-table input{
-    width:95%;
-    border:none;
-    outline:none;
-}
-
-.assessment-table th{
-    background:var(--light-blue);
-    color:var(--navy);
-}
-
-.assessment-table tr:nth-child(even){
-    background:#fafafa;
-}
-
-.assessment-table tr.group-row > td:first-child{
-    border-left:2px solid #000;
-}
-
-.assessment-table tr.group-row > td:last-child{
-    border-right:2px solid #000;
-}
-
-.assessment-table tr.group-start > td{
-    border-top:2px solid #000;
-}
-
-.assessment-table tr.group-end > td{
-    border-bottom:2px solid #000;
-}
-
-.instructions{
-    background:#eef4fb;
-    border-left:5px solid var(--navy);
-    padding:15px;
-    margin:20px 0;
-}
-
-.footer{
-    text-align:center;
-    margin-top:30px;
-    color:#666;
-    font-size:12px;
-}
-
-@media print{
-
-    body{
-        background:white;
-        padding:0;
-    }
-
-    .container{
-        box-shadow:none;
-        max-width:none;
-        width:100%;
-        padding:0;
-    }
-
-    .controls{
-        display:none;
-    }
-
-}
-
-</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23002147'/%3E%3Crect x='6' y='23' width='20' height='3' fill='%23c4a35a'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<div class="container">
+<a class="skip-link" href="#main">Skip to the sheet</a>
 
-<div class="header">
+<div class="sheet">
 
-<h1>THE ROYAL MILITARY SCHOOL OF MUSIC</h1>
+<header class="sheet-header">
+<p class="eyebrow">The Royal Military School of Music</p>
+<h1>ARB Class 3 Scales</h1>
+<p class="subtitle">Brass · Woodwind · Percussion</p>
+</header>
 
-<h2>ARB CLASS 3 SCALES</h2>
-
-<h3>Brass / Woodwind / Percussion</h3>
-
-</div>
-
-<div class="controls">
-
-<label for="instrument">Instrument:</label>
-
+<div class="toolbar">
+<div class="controls-row">
+<div class="field">
+<label for="instrument">Instrument</label>
 <select id="instrument"></select>
-
-<button onclick="generateAssessment()">
-Generate Scales
-</button>
-
-<button onclick="window.print()">
-Print / Save PDF
-</button>
-
+</div>
+<div class="actions">
+<button type="button" id="generateButton">Generate Scales</button>
+<button type="button" id="downloadButton" class="secondary">Download Word</button>
+</div>
+</div>
 </div>
 
-<div class="assessment-id">
+<main id="main">
 
-Assessment ID:
-<span id="assessmentId">Awaiting Generation</span>
+<p class="assessment-id">
+<span class="assessment-id-label">Assessment ID:</span>
+<strong id="assessmentId">Awaiting generation</strong>
+</p>
 
-</div>
-
-<div class="section-title">
-Candidate Details
-</div>
-
+<section class="block" aria-labelledby="detailsHeading">
+<h2 id="detailsHeading">Candidate details</h2>
 <table class="details-table">
-
 <tr>
-
 <td>
-<strong>Number</strong><br>
-<input type="text">
+<label for="candidateNumber">Number</label>
+<input id="candidateNumber" name="number" type="text" autocomplete="off" spellcheck="false">
 </td>
-
 <td>
-<strong>Rank</strong><br>
-<input type="text">
+<label for="candidateRank">Rank</label>
+<input id="candidateRank" name="rank" type="text" autocomplete="off" spellcheck="false">
 </td>
-
 <td>
-<strong>Name</strong><br>
-<input type="text">
+<label for="candidateName">Name</label>
+<input id="candidateName" name="name" type="text" autocomplete="name">
 </td>
-
 <td>
-<strong>Date</strong><br>
-<input type="date">
+<label for="candidateDate">Date</label>
+<input id="candidateDate" name="date" type="date">
 </td>
-
 </tr>
-
 <tr>
-
 <td colspan="2">
-<strong>Instrument</strong><br>
-<span id="selectedInstrument">Not Selected</span>
+<span class="label-text" id="instrumentLabel">Instrument</span>
+<span id="selectedInstrument" class="locked-value">Not selected</span>
 </td>
-
 <td colspan="2">
-<strong>Band</strong><br>
-<input type="text">
+<label for="candidateBand">Band</label>
+<input id="candidateBand" name="band" type="text" autocomplete="organization">
 </td>
-
 </tr>
-
 </table>
+</section>
 
-<div class="instructions">
+<section class="instructions" aria-labelledby="instructionsHeading">
+<h2 id="instructionsHeading">Instructions</h2>
+<p>Record all technical exercises in the order shown below. Submit this assessment sheet alongside the video recording. All exercises must be performed using the indicated articulation and tempo requirements.</p>
+<p><strong>Tempo Guidance:</strong> All tempi are shown in crotchet beats per minute (♩ = BPM).</p>
+</section>
 
-<strong>Instructions</strong><br><br>
-
-Record all technical exercises in the order shown below.
-Submit this assessment sheet alongside the video recording.
-All exercises must be performed using the indicated articulation and tempo requirements.
-
-<br><br>
-
-<strong>Tempo Guidance:</strong>
-All tempi are shown in crotchet beats per minute (♩ = BPM).
-
-</div>
-
-<div class="section-title">
-Scales
-</div>
-
+<section class="block" aria-labelledby="scalesHeading">
+<h2 id="scalesHeading">Scales</h2>
+<p class="scroll-hint">On a small screen, swipe the table sideways to see every column.</p>
+<div class="table-scroll" tabindex="0" aria-labelledby="scalesHeading">
 <table class="assessment-table">
-
+<caption class="visually-hidden">Scales and technical exercises for this assessment. Record them from the top.</caption>
 <thead>
-
 <tr>
-
-<th>Discipline</th>
-<th>Note</th>
-<th>Octaves</th>
-<th>Tempo (BPM)</th>
-<th>Articulation</th>
-
+<th scope="col">Discipline</th>
+<th scope="col">Note</th>
+<th scope="col">Octaves</th>
+<th scope="col">Tempo (BPM)</th>
+<th scope="col">Articulation</th>
 </tr>
-
 </thead>
-
 <tbody id="assessmentBody">
-
 <tr>
-
-<td colspan="5" style="text-align:center;">
-
-Click "Generate Assessment"
-
-</td>
-
+<td class="empty" colspan="5">Choose an instrument, then press Generate Scales.</td>
 </tr>
-
 </tbody>
-
 </table>
+</div>
+</section>
 
-<div class="footer">
+</main>
 
-Generated by RMSM ARB Assessment Generator<br>
-Version 5.1
+<footer class="sheet-footer">
+<p>Generated by RMSM ARB Assessment Generator<br>Version 5.1</p>
+</footer>
 
 </div>
 
-</div>
-
-<script>
-
-const instrumentOrder = [
-    { name:"Flute", databaseKey:"Flute" },
-    { name:"Oboe", databaseKey:"Oboe" },
-    { name:"Bb Clarinet", databaseKey:"Bb Clarinet" },
-    { name:"Saxophone", databaseKey:"Saxophone" },
-    { name:"Bassoon", databaseKey:"Bassoon" },
-    { name:"French Horn", databaseKey:"French Horn" },
-    { name:"Eb Cornet", databaseKey:"Eb Cornet" },
-    { name:"Cornet", databaseKey:"Cornet" },
-    { name:"Trumpet", databaseKey:"Trumpet" },
-    { name:"Flugal Horn", databaseKey:"Flugel Horn" },
-    { name:"Eb Tenor Horn", databaseKey:"Tenor Horn" },
-    { name:"Tenor Trombone Treble Clef", databaseKey:"Tenor Trombone (Treble Clef)" },
-    { name:"Tenor Trombone Bass Clef", databaseKey:"Tenor Trombone (Bass Clef)" },
-    { name:"Euphonium Treble Clef", databaseKey:"Euphonium (Treble Clef)" },
-    { name:"Euphonium Bass Clef", databaseKey:"Euphonium (Bass Clef)" },
-    { name:"Baritone Treble Clef", databaseKey:"Baritone (Treble Clef)" },
-    { name:"Baritone Bass Clef", databaseKey:"Baritone (Bass Clef)" },
-    { name:"Eb Tuba Treble Clef", databaseKey:"Eb Tuba (Treble Clef)" },
-    { name:"Eb Tuba Bass Clef", databaseKey:"Eb Tuba (Bass Clef)" },
-    { name:"Bb Tuba Treble Clef", databaseKey:"Bb Tuba (Treble Clef)" },
-    { name:"Bb Tuba Bass Clef", databaseKey:"Bb Tuba (Bass Clef)" },
-    { name:"Percussion", databaseKey:"Percussion" }
-];
-
-function loadInstruments(){
-
-    const dropdown =
-    document.getElementById("instrument");
-
-    instrumentOrder.forEach(({name,databaseKey})=>{
-
-        const option =
-        document.createElement("option");
-
-        option.value = databaseKey;
-        option.textContent = name;
-
-        dropdown.appendChild(option);
-
-    });
-
-}
-
-loadInstruments();
-
-function createAssessmentId(){
-
-    const now = new Date();
-
-    const year =
-    now.getFullYear();
-
-    const month =
-    String(now.getMonth()+1)
-    .padStart(2,"0");
-
-    const day =
-    String(now.getDate())
-    .padStart(2,"0");
-
-    const random =
-    Math.floor(Math.random()*9000)+1000;
-
-    return `ARB3-${year}${month}${day}-${random}`;
-
-}
-function randomItem(array){
-
-    return array[
-        Math.floor(
-            Math.random() * array.length
-        )
-    ];
-
-}
-
-function shuffle(array){
-
-    return [...array].sort(
-        () => Math.random() - 0.5
-    );
-
-}
-
-function selectUnique(data,count){
-
-    const items =
-    Object.entries(data);
-
-    return shuffle(items)
-        .slice(0,count)
-        .map(
-            ([key,octaves]) => ({
-                key,
-                octaves
-            })
-        );
-
-}
-
-function generateAssessment(){
-
-    document.getElementById(
-        "assessmentId"
-    ).textContent =
-    createAssessmentId();
-
-    const selectedOption =
-    document.getElementById("instrument")
-    .selectedOptions[0];
-
-    const instrumentName =
-    selectedOption.textContent;
-
-    document.getElementById(
-        "selectedInstrument"
-    ).textContent =
-    instrumentName;
-
-    const instrument =
-    database[selectedOption.value];
-
-    const body =
-    document.getElementById(
-        "assessmentBody"
-    );
-
-    body.innerHTML = "";
-
-    const structure = [
-
-        {
-            name:"Major Scale",
-            count:5,
-            source:instrument.major
-        },
-
-        {
-            name:"Harmonic Minor Scale",
-            count:2,
-            source:instrument.harmonicMinor
-        },
-
-        {
-            name:"Melodic Minor Scale",
-            count:2,
-            source:instrument.melodicMinor
-        },
-
-        {
-            name:"Chromatic Scale",
-            count:1,
-            source:instrument.chromatic
-        },
-
-        {
-            name:"Major Arpeggio",
-            count:2,
-            source:instrument.majorArpeggio
-        },
-
-        {
-            name:"Minor Arpeggio",
-            count:2,
-            source:instrument.minorArpeggio
-        },
-
-        {
-            name:"Dominant 7th",
-            count:2,
-            source:instrument.dominant7th
-        },
-
-        {
-            name:"Diminished 7th",
-            count:2,
-            source:instrument.diminished7th
-        },
-
-        {
-            name:"Whole Tone Scale",
-            count:2,
-            source:instrument.wholeTone
-        }
-
-    ];
-
-    structure.forEach(section=>{
-
-        const selected =
-        selectUnique(
-            section.source,
-            section.count
-        );
-
-        selected.forEach((item,index)=>{
-
-            const articulation =
-            randomItem(
-                instrument.articulations
-            );
-
-            const groupClasses = [
-                "group-row",
-                index === 0 ? "group-start" : "",
-                index === selected.length - 1 ? "group-end" : ""
-            ].filter(Boolean).join(" ");
-
-            const range =
-            item.octaves === "12th"
-            ? "To the 12th"
-            : item.octaves + " Octaves";
-
-            let tempo = "";
-
-            if(
-                section.name === "Major Scale" ||
-                section.name === "Harmonic Minor Scale" ||
-                section.name === "Melodic Minor Scale" ||
-                section.name === "Chromatic Scale" ||
-                section.name === "Whole Tone Scale"
-            ){
-                tempo = instrument.tempos.scales;
-            }
-            else if(
-                section.name === "Major Arpeggio" ||
-                section.name === "Minor Arpeggio"
-            ){
-                tempo = instrument.tempos.arpeggios;
-            }
-            else{
-                tempo = instrument.tempos.dominantAndDiminished;
-            }
-
-            body.innerHTML += `
-
-            <tr class="${groupClasses}">
-
-                <td>${section.name}</td>
-
-                <td>${item.key}</td>
-
-                <td>${range}</td>
-
-                <td>${tempo}</td>
-
-                <td>${articulation}</td>
-
-            </tr>
-
-            `;
-
-        });
-
-    });
-
-}
-
-</script>
-
+<p id="status" class="visually-hidden no-print" role="status"></p>
+
+<noscript>
+<p class="noscript">JavaScript is turned off, so a scale list cannot be built. Turn JavaScript on, then reload this page.</p>
+</noscript>
+
+<script src="Database-v5.js"></script>
+<script src="download-docx.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
