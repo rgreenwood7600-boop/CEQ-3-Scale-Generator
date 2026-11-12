@@ -2,7 +2,7 @@
 
 A one-page tool for building an ARB Class 3 scales sheet at the Royal Military School of Music. It covers brass, woodwind and percussion.
 
-You choose an instrument and press **Generate Scales**. The page makes a list of scales and arpeggios for that instrument, each with a starting note, a range, a tempo and an articulation, and it gives the sheet a new assessment ID. Fill in the candidate’s details, then download the sheet as a Word document to go with the video recording.
+You choose an instrument and press **Generate Scales**. The page makes a list of scales and arpeggios for that instrument, each with a starting note, a range, a tempo and an articulation, and it gives the sheet a new assessment ID. The candidate records a video of those scales. **Download Word** saves the examiner’s marksheet: the generated scales are filled in, and the boxes for pieces, sight reading, transposition and the scores are left blank for the examiner.
 
 The notes, ranges, tempi and articulations come from `Database-v5.js`. The page does not change that list.
 
@@ -21,7 +21,7 @@ Keep these files together. The page loads `styles.css`, `app.js`, `download-docx
 2. Press **Generate Scales**.
 3. Fill in number, rank, name, date and band. These details stay put if you generate another list.
 4. Record the exercises from the top of the table, using the articulation and tempo on each row. Tempi are crotchet beats per minute.
-5. Press **Download Word**. That saves a `.docx` file of the sheet as it looks now, including the candidate details and the scale list. Open it in Word.
+5. Press **Download Word**. That saves a `.docx` marksheet. The scales from this page are written into the scale boxes. Pieces or songs, sight reading, transposition, the score boxes, the mark summary and the examiner’s signature are left blank. Open it in Word.
 
 Generating again keeps the candidate details, replaces the scale list, and creates a new assessment ID.
 

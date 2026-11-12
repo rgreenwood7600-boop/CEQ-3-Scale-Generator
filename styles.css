@@ -270,6 +270,12 @@ h2 {
     margin-bottom: 0;
 }
 
+.download-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
 .scroll-hint {
     display: none;
     margin: 0 0 8px;
@@ -458,7 +464,8 @@ h2 {
     }
 
     .toolbar,
-    .scroll-hint {
+    .scroll-hint,
+    .download-note {
         display: none !important;
     }
 
