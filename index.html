@@ -133,6 +133,22 @@ button:hover{
     background:#fafafa;
 }
 
+.assessment-table tr.group-row > td:first-child{
+    border-left:2px solid #000;
+}
+
+.assessment-table tr.group-row > td:last-child{
+    border-right:2px solid #000;
+}
+
+.assessment-table tr.group-start > td{
+    border-top:2px solid #000;
+}
+
+.assessment-table tr.group-end > td{
+    border-bottom:2px solid #000;
+}
+
 .instructions{
     background:#eef4fb;
     border-left:5px solid var(--navy);
@@ -180,7 +196,7 @@ button:hover{
 
 <h2>ARB CLASS 3 SCALES</h2>
 
-<h3>Brass / Woodwind</h3>
+<h3>Brass / Woodwind / Percussion</h3>
 
 </div>
 
@@ -294,7 +310,7 @@ Scales
 
 <td colspan="5" style="text-align:center;">
 
-Click "Generate Scales"
+Click "Generate Assessment"
 
 </td>
 
@@ -315,17 +331,42 @@ Version 5.1
 
 <script>
 
+const instrumentOrder = [
+    { name:"Flute", databaseKey:"Flute" },
+    { name:"Oboe", databaseKey:"Oboe" },
+    { name:"Bb Clarinet", databaseKey:"Bb Clarinet" },
+    { name:"Saxophone", databaseKey:"Saxophone" },
+    { name:"Bassoon", databaseKey:"Bassoon" },
+    { name:"French Horn", databaseKey:"French Horn" },
+    { name:"Eb Cornet", databaseKey:"Eb Cornet" },
+    { name:"Cornet", databaseKey:"Cornet" },
+    { name:"Trumpet", databaseKey:"Trumpet" },
+    { name:"Flugal Horn", databaseKey:"Flugel Horn" },
+    { name:"Eb Tenor Horn", databaseKey:"Tenor Horn" },
+    { name:"Tenor Trombone Treble Clef", databaseKey:"Tenor Trombone (Treble Clef)" },
+    { name:"Tenor Trombone Bass Clef", databaseKey:"Tenor Trombone (Bass Clef)" },
+    { name:"Euphonium Treble Clef", databaseKey:"Euphonium (Treble Clef)" },
+    { name:"Euphonium Bass Clef", databaseKey:"Euphonium (Bass Clef)" },
+    { name:"Baritone Treble Clef", databaseKey:"Baritone (Treble Clef)" },
+    { name:"Baritone Bass Clef", databaseKey:"Baritone (Bass Clef)" },
+    { name:"Eb Tuba Treble Clef", databaseKey:"Eb Tuba (Treble Clef)" },
+    { name:"Eb Tuba Bass Clef", databaseKey:"Eb Tuba (Bass Clef)" },
+    { name:"Bb Tuba Treble Clef", databaseKey:"Bb Tuba (Treble Clef)" },
+    { name:"Bb Tuba Bass Clef", databaseKey:"Bb Tuba (Bass Clef)" },
+    { name:"Percussion", databaseKey:"Percussion" }
+];
+
 function loadInstruments(){
 
     const dropdown =
     document.getElementById("instrument");
 
-    Object.keys(database).forEach(name=>{
+    instrumentOrder.forEach(({name,databaseKey})=>{
 
         const option =
         document.createElement("option");
 
-        option.value = name;
+        option.value = databaseKey;
         option.textContent = name;
 
         dropdown.appendChild(option);
@@ -398,10 +439,12 @@ function generateAssessment(){
     ).textContent =
     createAssessmentId();
 
+    const selectedOption =
+    document.getElementById("instrument")
+    .selectedOptions[0];
+
     const instrumentName =
-    document.getElementById(
-        "instrument"
-    ).value;
+    selectedOption.textContent;
 
     document.getElementById(
         "selectedInstrument"
@@ -409,7 +452,7 @@ function generateAssessment(){
     instrumentName;
 
     const instrument =
-    database[instrumentName];
+    database[selectedOption.value];
 
     const body =
     document.getElementById(
@@ -484,12 +527,18 @@ function generateAssessment(){
             section.count
         );
 
-        selected.forEach(item=>{
+        selected.forEach((item,index)=>{
 
             const articulation =
             randomItem(
                 instrument.articulations
             );
+
+            const groupClasses = [
+                "group-row",
+                index === 0 ? "group-start" : "",
+                index === selected.length - 1 ? "group-end" : ""
+            ].filter(Boolean).join(" ");
 
             const range =
             item.octaves === "12th"
@@ -519,7 +568,7 @@ function generateAssessment(){
 
             body.innerHTML += `
 
-            <tr>
+            <tr class="${groupClasses}">
 
                 <td>${section.name}</td>
 
