@@ -557,6 +557,8 @@ const database = {
         dominantAndDiminished: "60-66"
     },
 
+    clef: "Bass",
+
     articulations: [
         "Slurred",
         "Legato Tongued",
@@ -677,6 +679,8 @@ const database = {
         arpeggios: "40-44",
         dominantAndDiminished: "60-66"
     },
+
+    clef: "Treble",
 
     articulations: [
         "Slurred",
@@ -799,6 +803,8 @@ const database = {
         dominantAndDiminished: "60-66"
     },
 
+    clef: "Treble",
+
     articulations: [
         "Slurred",
         "Legato Tongued",
@@ -919,6 +925,8 @@ const database = {
         arpeggios: "40-44",
         dominantAndDiminished: "60-66"
     },
+
+    clef: "Bass",
 
     articulations: [
         "Slurred",
@@ -1907,4 +1915,736 @@ const database = {
             "Bb": "2"
         }
     }
+,
+"Flute": {
+
+    tempos: {
+        scales: "84-96",
+        arpeggios: "48-54",
+        dominantAndDiminished: "72-80"
+    },
+
+    articulations: [
+        "Slurred",
+        "Legato Tongued",
+        "Staccato"
+    ],
+
+    clef: "Treble",
+
+    major: {
+        "C":"3",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    harmonicMinor: {
+        "C":"3",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    melodicMinor: {
+        "C":"3",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    majorArpeggio: {
+        "C":"3",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    minorArpeggio: {
+        "C":"3",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    chromatic: {
+        "C":"3",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    dominant7th: {
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"3",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2"
+    },
+
+    diminished7th: {
+        "C":"3",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    wholeTone: {
+        "C":"2",
+        "C#/Db":"2"
+    }
+
+}
+,
+"Oboe": {
+
+    tempos: {
+        scales: "84-96",
+        arpeggios: "48-54",
+        dominantAndDiminished: "72-80"
+    },
+
+    articulations: [
+        "Slurred",
+        "Legato Tongued",
+        "Staccato"
+    ],
+
+    clef: "Treble",
+
+    major: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"12th",
+        "G":"12th",
+        "G#/Ab":"12th",
+        "A":"12th",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    harmonicMinor: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"12th",
+        "G":"12th",
+        "G#/Ab":"12th",
+        "A":"12th",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    melodicMinor: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"12th",
+        "G":"12th",
+        "G#/Ab":"12th",
+        "A":"12th",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    majorArpeggio: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"12th",
+        "G":"12th",
+        "G#/Ab":"12th",
+        "A":"12th",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    minorArpeggio: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"12th",
+        "G":"12th",
+        "G#/Ab":"12th",
+        "A":"12th",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    chromatic: {
+        "C#/Db":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    dominant7th: {
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2"
+    },
+
+    diminished7th: {
+        "C":"2",
+        "C#/Db":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    wholeTone: {
+        "C":"2",
+        "C#/Db":"2"
+    }
+},
+"Bb Clarinet": {
+
+    tempos: {
+        scales: "84-96",
+        arpeggios: "48-54",
+        dominantAndDiminished: "72-80"
+    },
+
+    articulations: [
+        "Slurred",
+        "Legato Tongued",
+        "Staccato"
+    ],
+
+    clef: "Treble",
+
+    major: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"3",
+        "F":"3",
+        "F#/Gb":"3",
+        "G":"3",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    harmonicMinor: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"3",
+        "F":"3",
+        "F#/Gb":"3",
+        "G":"3",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    melodicMinor: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"3",
+        "F":"3",
+        "F#/Gb":"3",
+        "G":"3",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    majorArpeggio: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"3",
+        "F":"3",
+        "F#/Gb":"3",
+        "G":"3",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    minorArpeggio: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"3",
+        "F":"3",
+        "F#/Gb":"3",
+        "G":"3",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    chromatic: {
+        "C#/Db":"2",
+        "D#/Eb":"2",
+        "E":"3",
+        "F":"3",
+        "F#/Gb":"3",
+        "G":"3",
+        "B":"2"
+    },
+
+    dominant7th: {
+        "C":"3",
+        "C#/Db":"2",
+        "D#/Eb":"2",
+        "F#/Gb":"2",
+        "A":"3",
+        "Bb":"3",
+        "B":"3"
+    },
+
+    diminished7th: {
+        "E":"3",
+        "F":"3",
+        "F#/Gb":"3"
+    },
+
+    wholeTone: {
+        "C":"2",
+        "B":"2"
+    }
+
+}
+,
+"Bassoon": {
+
+    tempos: {
+        scales: "84-96",
+        arpeggios: "48-54",
+        dominantAndDiminished: "72-80"
+    },
+
+    articulations: [
+        "Slurred",
+        "Legato Tongued",
+        "Staccato"
+    ],
+
+    clef: "Bass",
+
+    major: {
+        "C":"3",
+        "C#/Db":"3",
+        "D":"3",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"3",
+        "B":"3"
+    },
+
+    harmonicMinor: {
+        "C":"3",
+        "C#/Db":"3",
+        "D":"3",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"3",
+        "B":"3"
+    },
+
+    melodicMinor: {
+        "C":"3",
+        "C#/Db":"3",
+        "D":"3",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"3",
+        "B":"3"
+    },
+
+    majorArpeggio: {
+        "C":"3",
+        "C#/Db":"3",
+        "D":"3",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"3",
+        "B":"3"
+    },
+
+    minorArpeggio: {
+        "C":"3",
+        "C#/Db":"3",
+        "D":"3",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"3",
+        "B":"3"
+    },
+
+    chromatic: {
+        "C":"3",
+        "C#/Db":"3",
+        "D":"3",
+        "D#/Eb":"2",
+        "E":"2",
+        "Bb":"3",
+        "B":"3"
+    },
+
+    dominant7th: {
+        "D#/Eb":"3",
+        "E":"3",
+        "F":"3",
+        "F#/Gb":"3",
+        "G":"3",
+        "G#/Ab":"2",
+        "A":"2"
+    },
+
+    diminished7th: {
+        "C":"3",
+        "Bb":"3",
+        "B":"3"
+    },
+
+    wholeTone: {
+        "G#/Ab":"2",
+        "A":"2"
+    }
+
+}
+,
+"Percussion": {
+
+    tempos: {
+        scales: "96-104",
+        arpeggios: "50-56",
+        dominantAndDiminished: "96-104"
+    },
+
+    articulations: [
+        "Hand to Hand"
+    ],
+
+    clef: "Percussion",
+
+    major: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    harmonicMinor: {
+        "C":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2"
+    },
+
+    melodicMinor: {
+        "C":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2"
+    },
+
+    majorArpeggio: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2",
+        "B":"2"
+    },
+
+    minorArpeggio: {
+        "C":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2",
+        "Bb":"2"
+    },
+
+    chromatic: {
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2"
+    },
+
+    dominant7th: {
+        "C":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "E":"2",
+        "F":"2",
+        "G":"2",
+        "A":"2",
+        "Bb":"2"
+    },
+
+    diminished7th: {
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2"
+    },
+
+    wholeTone: {
+        "C":"2",
+        "B":"2"
+    }
+
+}
+,
+"Eb Cornet": {
+
+    tempos: {
+        scales: "84-96",
+        arpeggios: "40-44",
+        dominantAndDiminished: "60-66"
+    },
+
+    articulations: [
+        "Slurred",
+        "Legato Tongued",
+        "Staccato"
+    ],
+
+    clef: "Treble",
+
+    major: {
+        "Bb":"2",
+        "B":"12th",
+        "C":"12th",
+        "C#/Db":"12th",
+        "D":"12th",
+        "D#/Eb":"12th",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2"
+    },
+
+    harmonicMinor: {
+        "Bb":"2",
+        "B":"12th",
+        "C":"12th",
+        "C#/Db":"12th",
+        "D":"12th",
+        "D#/Eb":"12th",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2"
+    },
+
+    melodicMinor: {
+        "Bb":"2",
+        "B":"12th",
+        "C":"12th",
+        "C#/Db":"12th",
+        "D":"12th",
+        "D#/Eb":"12th",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2"
+    },
+
+    majorArpeggio: {
+        "Bb":"2",
+        "B":"12th",
+        "C":"12th",
+        "C#/Db":"12th",
+        "D":"12th",
+        "D#/Eb":"12th",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2"
+    },
+
+    minorArpeggio: {
+        "Bb":"2",
+        "B":"12th",
+        "C":"12th",
+        "C#/Db":"12th",
+        "D":"12th",
+        "D#/Eb":"12th",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2"
+    },
+
+    chromatic: {
+        "Bb":"2",
+        "E":"2",
+        "F":"2",
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2",
+        "A":"2"
+    },
+
+    dominant7th: {
+        "Bb":"2",
+        "B":"2",
+        "C":"2",
+        "C#/Db":"2",
+        "D":"2",
+        "D#/Eb":"2",
+        "A":"2"
+    },
+
+    diminished7th: {
+        "F#/Gb":"2",
+        "G":"2",
+        "G#/Ab":"2"
+    },
+
+    wholeTone: {
+        "Bb":"2",
+        "A":"2"
+    }
+
+}
 };
