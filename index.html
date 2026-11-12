@@ -261,6 +261,11 @@ Record all technical exercises in the order shown below.
 Submit this assessment sheet alongside the video recording.
 All exercises must be performed using the indicated articulation and tempo requirements.
 
+<br><br>
+
+<strong>Tempo Guidance:</strong>
+All tempi are shown in crotchet beats per minute (♩ = BPM).
+
 </div>
 
 <div class="section-title">
@@ -276,6 +281,7 @@ Scales
 <th>Discipline</th>
 <th>Note</th>
 <th>Octaves</th>
+<th>Tempo (BPM)</th>
 <th>Articulation</th>
 
 </tr>
@@ -286,7 +292,7 @@ Scales
 
 <tr>
 
-<td colspan="4" style="text-align:center;">
+<td colspan="5" style="text-align:center;">
 
 Click "Generate Assessment"
 
@@ -490,6 +496,27 @@ function generateAssessment(){
             ? "To the 12th"
             : item.octaves + " Octaves";
 
+            let tempo = "";
+
+            if(
+                section.name === "Major Scale" ||
+                section.name === "Harmonic Minor Scale" ||
+                section.name === "Melodic Minor Scale" ||
+                section.name === "Chromatic Scale" ||
+                section.name === "Whole Tone Scale"
+            ){
+                tempo = instrument.tempos.scales;
+            }
+            else if(
+                section.name === "Major Arpeggio" ||
+                section.name === "Minor Arpeggio"
+            ){
+                tempo = instrument.tempos.arpeggios;
+            }
+            else{
+                tempo = instrument.tempos.dominantAndDiminished;
+            }
+
             body.innerHTML += `
 
             <tr>
@@ -499,6 +526,8 @@ function generateAssessment(){
                 <td>${item.key}</td>
 
                 <td>${range}</td>
+
+                <td>${tempo}</td>
 
                 <td>${articulation}</td>
 
