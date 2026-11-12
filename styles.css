@@ -1,0 +1,519 @@
+/* ARB Class 3 scale sheet. The page stays a light paper form. */
+
+:root {
+    --navy: #002147;
+    --navy-bright: #00356d;
+    --gold: #b9975b;
+    --paper: #ffffff;
+    --canvas: #e7eef4;
+    --ink: #1c2430;
+    --muted: #3e4c5a;
+    --line: #c5ced6;
+    --header: #dce6f1;
+    --soft: #f4f8fb;
+    --focus: #0b57d0;
+    --warn-bg: #fff6ea;
+    --warn-ink: #6b320c;
+    --warn-line: #c47b2b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    color-scheme: light;
+}
+
+body {
+    margin: 0;
+    padding: 28px 16px 48px;
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.45;
+    color: var(--ink);
+    background: var(--canvas);
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #101820;
+    }
+}
+
+.sheet {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: var(--paper);
+    padding: 32px 36px 28px;
+    border-top: 6px solid var(--navy);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0, 33, 71, 0.1);
+}
+
+.sheet-header {
+    text-align: center;
+    border-bottom: 3px solid var(--navy);
+    box-shadow: 0 3px 0 var(--gold);
+    padding-bottom: 16px;
+    margin-bottom: 26px;
+}
+
+.eyebrow {
+    margin: 0;
+    color: var(--navy);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.sheet-header h1 {
+    margin: 8px 0 4px;
+    color: var(--navy);
+    font-size: clamp(1.7rem, 4vw, 2.15rem);
+    line-height: 1.15;
+    font-weight: 700;
+}
+
+.subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 14px;
+    background: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+}
+
+.controls-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 240px;
+    min-width: 0;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+label,
+.label-text {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 0.92rem;
+}
+
+.field label {
+    margin-bottom: 0;
+}
+
+select,
+button,
+input {
+    font: inherit;
+    color: inherit;
+}
+
+select {
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 10px;
+    border: 1px solid #8ea0b3;
+    border-radius: 6px;
+    background: white;
+}
+
+button {
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 2px solid var(--navy);
+    border-radius: 6px;
+    background: var(--navy);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--navy-bright);
+    border-color: var(--navy-bright);
+}
+
+button.secondary {
+    background: white;
+    color: var(--navy);
+}
+
+button.secondary:hover {
+    background: #e7f0f8;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+.table-scroll:focus-visible,
+.skip-link:focus {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.assessment-id {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35em 0.4em;
+    margin: 0 0 22px;
+    padding: 12px 16px;
+    background: var(--navy);
+    color: white;
+    border-radius: 6px;
+}
+
+.assessment-id-label {
+    font-weight: 700;
+}
+
+.assessment-id strong {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+    overflow-wrap: anywhere;
+}
+
+.block {
+    margin: 0 0 8px;
+}
+
+h2 {
+    margin: 18px 0 10px;
+    color: var(--navy);
+    font-size: 1.15rem;
+}
+
+.details-table,
+.assessment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.details-table td,
+.assessment-table th,
+.assessment-table td {
+    border: 1px solid #1c2430;
+    padding: 8px 10px;
+    vertical-align: top;
+}
+
+.assessment-table th,
+.assessment-table td {
+    white-space: nowrap;
+}
+
+.details-table input {
+    width: 100%;
+    min-height: 32px;
+    margin: 0;
+    padding: 4px 2px;
+    border: none;
+    border-bottom: 1px solid #8ea0b3;
+    border-radius: 0;
+    background: transparent;
+}
+
+.details-table input:focus {
+    border-bottom-color: var(--navy);
+    background: #f7fbff;
+}
+
+.locked-value {
+    display: inline;
+}
+
+.instructions {
+    margin: 20px 0;
+    padding: 14px 16px;
+    background: var(--soft);
+    border-left: 5px solid var(--navy);
+    border-radius: 0 6px 6px 0;
+}
+
+.instructions h2 {
+    margin: 0 0 8px;
+}
+
+.instructions p {
+    margin: 0 0 8px;
+}
+
+.instructions p:last-child {
+    margin-bottom: 0;
+}
+
+.download-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.scroll-hint {
+    display: none;
+    margin: 0 0 8px;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.assessment-table {
+    min-width: 560px;
+}
+
+.assessment-table th {
+    background: var(--header);
+    color: var(--navy);
+    text-align: left;
+    font-weight: 700;
+}
+
+.assessment-table tr.group-row > :first-child {
+    border-left: 2px solid var(--navy);
+}
+
+.assessment-table tr.group-row > :last-child {
+    border-right: 2px solid var(--navy);
+}
+
+.assessment-table tr.group-start > th,
+.assessment-table tr.group-start > td {
+    border-top: 2px solid var(--navy);
+}
+
+.assessment-table tr.group-end > th,
+.assessment-table tr.group-end > td {
+    border-bottom: 2px solid var(--navy);
+}
+
+.assessment-table tr.group-alt {
+    background: var(--soft);
+}
+
+.assessment-table td.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 16px 10px;
+    white-space: normal;
+}
+
+.sheet-footer {
+    margin-top: 28px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.sheet-footer p {
+    margin: 0;
+}
+
+.skip-link {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    transform: translateY(-160%);
+    z-index: 3;
+    padding: 8px 12px;
+    background: var(--navy);
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.skip-link:focus {
+    transform: none;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.noscript {
+    max-width: 1000px;
+    margin: 16px auto 0;
+    padding: 12px 16px;
+    background: var(--warn-bg);
+    color: var(--warn-ink);
+    border-left: 4px solid var(--warn-line);
+}
+
+@media (max-width: 720px) {
+    body {
+        padding: 12px 10px 32px;
+    }
+
+    .sheet {
+        padding: 20px 14px 18px;
+        border-radius: 8px;
+    }
+
+    .controls-row {
+        align-items: stretch;
+    }
+
+    .actions,
+    .actions button {
+        flex: 1 1 100%;
+    }
+
+    .actions button {
+        width: 100%;
+    }
+
+    .scroll-hint {
+        display: block;
+    }
+
+    .details-table,
+    .details-table tbody,
+    .details-table tr,
+    .details-table td {
+        display: block;
+        width: auto;
+    }
+
+    .details-table tr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .details-table td[colspan="2"] {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 420px) {
+    .details-table tr {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (hover: hover) {
+    .assessment-table tbody tr:hover {
+        background: #e7eef6;
+    }
+}
+
+@media (forced-colors: active) {
+    .sheet,
+    button,
+    select,
+    .assessment-id {
+        border: 1px solid CanvasText;
+    }
+
+    button.secondary {
+        background: Canvas;
+        color: CanvasText;
+    }
+}
+
+@media print {
+    body {
+        padding: 0;
+        background: white;
+    }
+
+    .sheet {
+        max-width: none;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .toolbar,
+    .scroll-hint,
+    .download-note {
+        display: none !important;
+    }
+
+    .details-table input {
+        border-bottom: none;
+        background: transparent;
+    }
+
+    .details-table input[type="date"] {
+        appearance: none;
+        -webkit-appearance: none;
+    }
+
+    .details-table input[type="date"]::-webkit-calendar-picker-indicator {
+        display: none !important;
+        -webkit-appearance: none;
+        width: 0;
+        opacity: 0;
+    }
+
+    .assessment-table {
+        min-width: 0;
+    }
+
+    .assessment-table th,
+    .assessment-table td {
+        white-space: normal;
+    }
+
+    .assessment-table tr,
+    .details-table tr,
+    .instructions,
+    .assessment-id {
+        break-inside: avoid;
+    }
+
+    .assessment-table thead {
+        display: table-header-group;
+    }
+
+    .assessment-id,
+    .assessment-table thead th,
+    .instructions {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    @page {
+        margin: 12mm;
+    }
+}
