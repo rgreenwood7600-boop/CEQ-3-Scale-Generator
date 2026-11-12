@@ -1,1 +1,1 @@
-# CEQ-3-Scale-Generator
+# CEQ-3-Scale-Generator-Woodwind-Brass
