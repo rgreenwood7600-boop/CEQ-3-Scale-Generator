@@ -1,11 +1,11 @@
 "use strict";
 
 /*
- * Builds an ARB Class 3 scale sheet from the syllabus in Database-v5.js.
+ * Builds an ARB Class 3 scale list from the syllabus in Database-v5.js.
  * That file holds the notes, ranges, tempi and articulations.
- * This file only chooses from those lists and fills in the sheet.
+ * This file only chooses from those lists and fills in the page.
  *
- * A sheet still has the same exercises as before:
+ * A list still has the same exercises as before:
  * 5 major scales, 2 harmonic minor, 2 melodic minor, 1 chromatic,
  * 2 major arpeggios, 2 minor arpeggios, 2 dominant 7ths,
  * 2 diminished 7ths and 2 whole-tone scales.
@@ -52,8 +52,8 @@ const INSTRUMENTS = [
 const instrumentSelect = document.getElementById("instrument");
 const generateButton = document.getElementById("generateButton");
 const downloadButton = document.getElementById("downloadButton");
-const assessmentId = document.getElementById("assessmentId");
-const selectedInstrument = document.getElementById("selectedInstrument");
+const resultInstrument = document.getElementById("resultInstrument");
+const scaleTable = document.getElementById("scaleTable");
 const assessmentBody = document.getElementById("assessmentBody");
 const statusLine = document.getElementById("status");
 
@@ -85,15 +85,6 @@ function selectedEntry() {
 
 function syllabus() {
     return typeof database === "undefined" ? null : database;
-}
-
-function createAssessmentId() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const random = Math.floor(Math.random() * 9000) + 1000;
-    return "ARB3-" + year + month + day + "-" + random;
 }
 
 /* A fair shuffle. Sorting by a random number does not give every note an equal chance. */
@@ -148,11 +139,28 @@ function cell(text) {
     return element;
 }
 
+function labelledCell(label, text, valueClass) {
+    const element = document.createElement("td");
+    const name = document.createElement("span");
+    name.className = "cell-label";
+    name.textContent = label;
+    const value = document.createElement("span");
+    if (valueClass) {
+        value.className = valueClass;
+    }
+    value.textContent = text;
+    element.append(name, value);
+    return element;
+}
+
 function showMessage(message) {
     assessmentBody.replaceChildren();
+    scaleTable.classList.remove("is-ready");
+    resultInstrument.hidden = true;
+    resultInstrument.textContent = "";
     const row = document.createElement("tr");
     const messageCell = cell(message);
-    messageCell.colSpan = 5;
+    messageCell.colSpan = 4;
     messageCell.className = "empty";
     row.append(messageCell);
     assessmentBody.append(row);
@@ -160,37 +168,48 @@ function showMessage(message) {
 
 function renderRows(rows) {
     assessmentBody.replaceChildren();
+    scaleTable.classList.add("is-ready");
     let exerciseCount = 0;
+    let lastDiscipline = "";
 
     rows.forEach((item) => {
-        const row = document.createElement("tr");
-        const classes = ["group-row"];
-        if (item.index === 0) {
-            classes.push("group-start");
+        if (item.discipline !== lastDiscipline) {
+            const heading = document.createElement("tr");
+            heading.className = "group-heading";
+            const title = document.createElement("th");
+            title.scope = "rowgroup";
+            title.colSpan = 4;
+            title.textContent = item.discipline;
+            heading.append(title);
+            assessmentBody.append(heading);
+            lastDiscipline = item.discipline;
         }
-        if (item.index === item.countInSection - 1) {
-            classes.push("group-end");
-        }
-        if (item.sectionIndex % 2 === 1) {
-            classes.push("group-alt");
-        }
-        row.className = classes.join(" ");
 
         if (item.missing) {
+            const row = document.createElement("tr");
+            row.className = "missing";
+            row.dataset.missing = "true";
+            row.dataset.discipline = item.discipline;
             const messageCell = cell("No " + item.discipline.toLowerCase() + " entries are saved for this instrument.");
-            messageCell.colSpan = 5;
+            messageCell.colSpan = 4;
             row.append(messageCell);
             assessmentBody.append(row);
             return;
         }
 
         exerciseCount += 1;
+        const row = document.createElement("tr");
+        row.dataset.discipline = item.discipline;
+        row.dataset.note = item.note;
+        row.dataset.range = item.range;
+        row.dataset.tempo = item.tempo;
+        row.dataset.articulation = item.articulation;
+
         row.append(
-            cell(item.discipline),
-            cell(item.note),
-            cell(item.range),
-            cell(item.tempo),
-            cell(item.articulation)
+            labelledCell("Note", item.note),
+            labelledCell("Octaves", item.range),
+            labelledCell("Tempo", item.tempo, "tempo"),
+            labelledCell("Articulation", item.articulation)
         );
         assessmentBody.append(row);
     });
@@ -253,23 +272,27 @@ function generateAssessment() {
 
     const instrument = data[entry.databaseKey];
     if (!instrument) {
-        announce(entry.name + " is not in the scale list. The current sheet was left as it is.");
+        announce(entry.name + " is not in the scale list. The current list was left as it is.");
         return;
     }
 
     const exerciseCount = renderRows(buildRows(instrument));
-    const id = createAssessmentId();
-    assessmentId.textContent = id;
-    selectedInstrument.textContent = entry.name;
-    announce("Generated " + exerciseCount + " exercises for " + entry.name + ". Assessment ID " + id + ".");
+    resultInstrument.hidden = false;
+    resultInstrument.textContent = entry.name;
+    announce("Generated " + exerciseCount + " exercises for " + entry.name + ".");
 }
 
 function downloadAssessment() {
+    const hasScales = assessmentBody.querySelector("tr[data-note], tr[data-missing]");
+    if (!hasScales) {
+        announce("Generate a scale list before downloading the PDF.");
+        return;
+    }
     try {
         const filename = downloadScaleSheet();
         announce("Downloaded " + filename + ".");
     } catch (error) {
-        announce("The Word document could not be created. Reload the page and try again.");
+        announce("The PDF could not be created. Reload the page and try again.");
     }
 }
 

@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Build an ARB Class 3 scales sheet for woodwind, brass and percussion at the Royal Military School of Music.">
+<meta name="description" content="Build an ARB Class 3 scale list for woodwind, brass and percussion at the Royal Military School of Music.">
 <meta name="theme-color" content="#002147">
 <meta name="color-scheme" content="light">
 <title>RMSM ARB Class 3 Scales Generator</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23002147'/%3E%3Crect x='6' y='23' width='20' height='3' fill='%23c4a35a'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to the sheet</a>
+<a class="skip-link" href="#main">Skip to the scales</a>
 
 <div class="sheet">
 
@@ -30,88 +30,70 @@
 </div>
 <div class="actions">
 <button type="button" id="generateButton">Generate Scales</button>
-<button type="button" id="downloadButton" class="secondary">Download Word</button>
+<button type="button" id="downloadButton" class="secondary">Download PDF</button>
 </div>
 </div>
-<p class="download-note">Download Word saves the examiner’s marksheet. These scales are filled in. Pieces, sight reading, transposition and the score boxes are left blank for the examiner.</p>
+<p class="download-note">Download PDF saves this list for A4. Each line has the scale, its articulation and its tempo.</p>
 </div>
 
 <main id="main">
 
-<p class="assessment-id">
-<span class="assessment-id-label">Assessment ID:</span>
-<strong id="assessmentId">Awaiting generation</strong>
-</p>
-
-<section class="block" aria-labelledby="detailsHeading">
-<h2 id="detailsHeading">Candidate details</h2>
-<table class="details-table">
-<tr>
-<td>
-<label for="candidateNumber">Number</label>
-<input id="candidateNumber" name="number" type="text" autocomplete="off" spellcheck="false">
-</td>
-<td>
-<label for="candidateRank">Rank</label>
-<input id="candidateRank" name="rank" type="text" autocomplete="off" spellcheck="false">
-</td>
-<td>
-<label for="candidateName">Name</label>
-<input id="candidateName" name="name" type="text" autocomplete="name">
-</td>
-<td>
-<label for="candidateDate">Date</label>
-<input id="candidateDate" name="date" type="date">
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<span class="label-text" id="instrumentLabel">Instrument</span>
-<span id="selectedInstrument" class="locked-value">Not selected</span>
-</td>
-<td colspan="2">
-<label for="candidateBand">Band</label>
-<input id="candidateBand" name="band" type="text" autocomplete="organization">
-</td>
-</tr>
-</table>
-</section>
-
-<section class="instructions" aria-labelledby="instructionsHeading">
-<h2 id="instructionsHeading">Instructions</h2>
-<p>Record all technical exercises in the order shown below. Submit this assessment sheet alongside the video recording. All exercises must be performed using the indicated articulation and tempo requirements.</p>
-<p><strong>Tempo guidance:</strong> Scales, chromatic scales, whole-tone scales, and dominant and diminished 7ths are in crotchet beats (♩ = BPM). Arpeggios are in dotted crotchet beats (♩. = BPM).</p>
-<p><strong>Dominant 7ths:</strong> Resolve to the tonic, with the leading note rising to the tonic.</p>
-</section>
+<p class="tempo-note">Play from the top. Scales, chromatic scales, whole-tone scales, and dominant and diminished 7ths are in crotchet beats (♩ = BPM). Arpeggios are in dotted crotchet beats (♩. = BPM). Dominant 7ths resolve to the tonic, with the leading note rising to the tonic.</p>
 
 <section class="block" aria-labelledby="scalesHeading">
 <h2 id="scalesHeading">Scales</h2>
-<p class="scroll-hint">On a small screen, swipe the table sideways to see every column.</p>
+<p id="resultInstrument" class="result-instrument" hidden></p>
 <div class="table-scroll" tabindex="0" aria-labelledby="scalesHeading">
-<table class="assessment-table">
-<caption class="visually-hidden">Scales and technical exercises for this assessment. Record them from the top.</caption>
+<table class="scale-table" id="scaleTable">
+<caption class="visually-hidden">Generated scales, each with its range, tempo and articulation.</caption>
+<colgroup>
+<col class="col-note">
+<col class="col-octaves">
+<col class="col-tempo">
+<col class="col-articulation">
+</colgroup>
 <thead>
 <tr>
-<th scope="col">Discipline</th>
 <th scope="col">Note</th>
 <th scope="col">Octaves</th>
-<th scope="col">Tempo (BPM)</th>
+<th scope="col">Tempo</th>
 <th scope="col">Articulation</th>
 </tr>
 </thead>
 <tbody id="assessmentBody">
 <tr>
-<td class="empty" colspan="5">Choose an instrument, then press Generate Scales.</td>
+<td class="empty" colspan="4">Choose an instrument, then press Generate Scales.</td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
 
+<section class="requirements" aria-labelledby="requirementsHeading">
+<details open>
+<summary>
+<h2 id="requirementsHeading">Performance Requirements</h2>
+</summary>
+<ol type="a">
+<li>Scales and arpeggios are to be performed from memory, at the tempo indicated and as per the range and articulation stipulated by the examiner.</li>
+<li>Candidates must not perform the scales and arpeggios over a greater range than stipulated.</li>
+<li>Candidates should react promptly to the scale/arpeggio being asked, without the need to ‘practice’ or run through the fingering/slide positioning of the scale prior to performing.</li>
+<li>Scales to the 12th: Candidates may choose to perform scales and arpeggios stipulated, either to the 12th straight or broken at the 11th.</li>
+<li>Major and minor arpeggios are to be played in triplet quavers.</li>
+<li>Candidates may take a breath during a scale, but it should not impact on the flow and fluency of the exercise.</li>
+<li>All scales are to start on the tonic and arpeggios are to be played in root position.</li>
+<li>Scales and arpeggios are to ascend and descend, starting on the lowest possible key note (unless otherwise indicated).</li>
+<li>Dominant 7th arpeggios are to be played in a stipulated key and resolve on to the tonic (except pianists).</li>
+<li>Diminished 7th arpeggios are to start on a stipulated starting note.</li>
+<li>The naming of scales as asked by the examiner applies to notation only: no adjustment should be made by the candidate based on the pitch of the instrument, e.g. C Major on a clarinet will sound B♭ Major at concert pitch.</li>
+</ol>
+</details>
+</section>
+
 </main>
 
 <footer class="sheet-footer">
-<p>Generated by RMSM ARB Assessment Generator<br>Version 5.1</p>
+<p>RMSM ARB Class 3 Scales Generator<br>Version 5.1</p>
 </footer>
 
 </div>
@@ -122,8 +104,8 @@
 <p class="noscript">JavaScript is turned off, so a scale list cannot be built. Turn JavaScript on, then reload this page.</p>
 </noscript>
 
-<script src="Database-v5.js?v=4"></script>
-<script src="download-docx.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="Database-v5.js?v=6"></script>
+<script src="download-pdf.js?v=6"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
