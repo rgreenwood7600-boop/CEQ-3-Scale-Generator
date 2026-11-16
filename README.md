@@ -2,7 +2,7 @@
 
 A one-page tool for building an ARB Class 3 scale list at the Royal Military School of Music. It covers brass, woodwind and percussion.
 
-You choose an instrument, fill in the candidate’s number, rank, name, band and date, and press **Generate Scales**. The page lists the scales and arpeggios for that instrument. Each line has a starting note, a range, a tempo and an articulation. **Download PDF** saves that same list as an A4 PDF, with those five details in a header at the top.
+You choose an instrument, fill in the candidate’s number, rank, name, band and date, and press **Generate Scales**. The page lists the scales and arpeggios for that instrument. Each line has a starting note, a range, a tempo and an articulation. **Download PDF** saves that same list as an A4 PDF, with those five details in a header at the top. Each scale has boxes for a mark of 1, ½ or 0, and the sheet ends with a total out of 20.
 
 The notes, ranges, tempi and articulations come from `Database-v5.js`. The page does not change that list.
 
@@ -21,7 +21,9 @@ Keep these files together. The page loads `styles.css`, `app.js`, `download-pdf.
 2. Fill in Number, Rank, Name, Date and Band. These can be entered before or after the list is generated.
 3. Press **Generate Scales**.
 4. Read the list from the top. Play each line with the articulation and tempo shown there. Scales and 7ths are in crotchet beats. Arpeggios are in dotted crotchet beats. Dominant 7ths resolve to the tonic, with the leading note rising to the tonic.
-5. Press **Download PDF**. That saves an A4 PDF of the same list. The number, rank, name, date and band are printed in a header above the scales. Open it in any PDF viewer, or print it.
+5. Press **Download PDF**. That saves an A4 PDF of the same list. The number, rank, name, date and band are printed in a header above the scales. Beside each scale are three boxes, marked 1, ½ and 0. One box is the mark for that scale. The total at the bottom is out of 20. Open it in any PDF viewer, or print it.
+
+The boxes are fields in the PDF. In a viewer that fills in forms, the examiner clicks one box on each scale. Adobe Acrobat, and other viewers that run form calculations, add the marks up into the total. The total can also be typed. On paper, the boxes are empty squares to tick.
 
 The page also lists the performance requirements under the scale list. Those stay on the page. They are not written into the PDF.
 
