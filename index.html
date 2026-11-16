@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Build an ARB Class 3 scale list for woodwind, brass and percussion at the Royal Military School of Music.">
+<meta name="description" content="Build an ARB Class 3 scale list for woodwind, brass and percussion at the Royal Military School of Music, with the candidate’s number, rank, name, band and date.">
 <meta name="theme-color" content="#002147">
 <meta name="color-scheme" content="light">
 <title>RMSM ARB Class 3 Scales Generator</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23002147'/%3E%3Crect x='6' y='23' width='20' height='3' fill='%23c4a35a'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css?v=7">
+<link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to the scales</a>
+<a class="skip-link" href="#scales">Skip to the scales</a>
 
 <div class="sheet">
 
@@ -33,14 +33,40 @@
 <button type="button" id="downloadButton" class="secondary">Download PDF</button>
 </div>
 </div>
-<p class="download-note">Download PDF saves this list for A4. Each line has the scale, its articulation and its tempo.</p>
+<p class="download-note">Download PDF saves this list for A4. Number, rank, name, band and date appear in a header at the top. Each line has the scale, its articulation and its tempo.</p>
 </div>
 
 <main id="main">
 
+<section class="details" aria-labelledby="detailsHeading">
+<h2 id="detailsHeading">Candidate details</h2>
+<div class="details-grid">
+<div class="field">
+<label for="candidateNumber">Number</label>
+<input id="candidateNumber" name="number" type="text" autocomplete="off" spellcheck="false">
+</div>
+<div class="field">
+<label for="candidateRank">Rank</label>
+<input id="candidateRank" name="rank" type="text" autocomplete="off" spellcheck="false">
+</div>
+<div class="field">
+<label for="candidateName">Name</label>
+<input id="candidateName" name="name" type="text" autocomplete="name">
+</div>
+<div class="field">
+<label for="candidateDate">Date</label>
+<input id="candidateDate" name="date" type="date">
+</div>
+<div class="field field-band">
+<label for="candidateBand">Band</label>
+<input id="candidateBand" name="band" type="text" autocomplete="organization">
+</div>
+</div>
+</section>
+
 <p class="tempo-note">Play from the top. Scales, chromatic scales, whole-tone scales, and dominant and diminished 7ths are in crotchet beats (♩ = BPM). Arpeggios are in dotted crotchet beats (♩. = BPM). Dominant 7ths resolve to the tonic, with the leading note rising to the tonic.</p>
 
-<section class="block" aria-labelledby="scalesHeading">
+<section class="block" id="scales" aria-labelledby="scalesHeading">
 <h2 id="scalesHeading">Scales</h2>
 <p id="resultInstrument" class="result-instrument" hidden></p>
 <div class="table-scroll" tabindex="0" aria-labelledby="scalesHeading">
@@ -105,7 +131,7 @@
 </noscript>
 
 <script src="Database-v5.js?v=6"></script>
-<script src="download-pdf.js?v=6"></script>
+<script src="download-pdf.js?v=7"></script>
 <script src="app.js?v=6"></script>
 </body>
 </html>

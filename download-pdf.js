@@ -6,8 +6,11 @@
  * so the page still works from a folder or from GitHub Pages with no
  * internet connection.
  *
- * The PDF is only the scale list: each exercise with its note, range,
- * articulation and tempo. There are no form fields and no boxes.
+ * The PDF is the scale list, with the candidate's number, rank, name,
+ * date and band in a header above the scales. Each exercise has its
+ * note, range, articulation and tempo. There are no form fields and
+ * no mark, comment or signature boxes. Performance requirements stay
+ * on the page and are not written into the file.
  */
 
 (function () {
@@ -17,9 +20,9 @@
     var RIGHT = PAGE_W - 48;
     var CONTENT_BOTTOM = 54;
     var BODY = 11;
-    var ROW = 18;
-    var HEADING = 16;
-    var GROUP_GAP = 7;
+    var ROW = 16;
+    var HEADING = 15;
+    var GROUP_GAP = 4;
 
     var NAVY = "0 0.129 0.278";
     var INK = "0.110 0.141 0.188";
@@ -120,6 +123,24 @@
             units += table[ch] || REGULAR[ch] || 500;
         }
         return units / 1000 * size;
+    }
+
+    /* Shrink a value so it stays inside its column, then clip it with an ellipsis. */
+    function fitText(text, maxWidth, size, bold) {
+        var value = String(text == null ? "" : text);
+        var current = size;
+        var minSize = 8;
+        while (current > minSize && textWidth(value, current, bold) > maxWidth) {
+            current -= 0.5;
+        }
+        if (textWidth(value, current, bold) <= maxWidth) {
+            return { text: value, size: current };
+        }
+        var clipped = value;
+        while (clipped.length > 1 && textWidth(clipped + "...", minSize, bold) > maxWidth) {
+            clipped = clipped.slice(0, -1);
+        }
+        return { text: clipped + "...", size: minSize };
     }
 
     function tempoParts(tempo) {
@@ -233,6 +254,67 @@
         return y - 18;
     }
 
+    /*
+     * Candidate header above the scales. The first line is Number, Rank and
+     * Date. The second is Name and Band, which are usually the longer values.
+     * Returns the y where the scale list can continue.
+     */
+    function drawCandidate(commands, candidate, top) {
+        var details = candidate || {};
+        var labelSize = 8;
+        var valueSize = 11;
+        var label1 = top - 14;
+        var value1 = label1 - 14;
+        var label2 = value1 - 16;
+        var value2 = label2 - 14;
+        var bottom = value2 - 10;
+        var width = RIGHT - LEFT;
+        var panel = "0.953 0.965 0.976";
+
+        commands.push(panel + " rg");
+        commands.push(num(LEFT) + " " + num(bottom) + " " + num(width) + " " + num(heightOf(top, bottom)) + " re");
+        commands.push("f");
+        commands.push(NAVY + " rg");
+        commands.push(num(LEFT) + " " + num(bottom) + " 3.2 " + num(heightOf(top, bottom)) + " re");
+        commands.push("f");
+        hLine(commands, LEFT, RIGHT, bottom, 1.15, GOLD);
+
+        var innerLeft = LEFT + 14;
+        var innerRight = RIGHT - 12;
+        var innerWidth = innerRight - innerLeft;
+
+        function valueAt(text, x, baseline, slot) {
+            var raw = String(text || "");
+            if (!raw || slot < 8) {
+                return;
+            }
+            var fitted = fitText(raw, slot, valueSize, true);
+            show(commands, fitted.text, x, baseline, "F2", fitted.size, INK);
+        }
+
+        var numberWidth = innerWidth * 0.28;
+        var rankWidth = innerWidth * 0.40;
+        var dateX = innerLeft + numberWidth + rankWidth;
+        show(commands, "Number", innerLeft, label1, "F2", labelSize, NAVY);
+        show(commands, "Rank", innerLeft + numberWidth, label1, "F2", labelSize, NAVY);
+        show(commands, "Date", dateX, label1, "F2", labelSize, NAVY);
+        valueAt(details.number, innerLeft, value1, numberWidth - 12);
+        valueAt(details.rank, innerLeft + numberWidth, value1, rankWidth - 12);
+        valueAt(details.date, dateX, value1, innerRight - dateX);
+
+        var nameWidth = innerWidth * 0.48;
+        show(commands, "Name", innerLeft, label2, "F2", labelSize, NAVY);
+        show(commands, "Band", innerLeft + nameWidth, label2, "F2", labelSize, NAVY);
+        valueAt(details.name, innerLeft, value2, nameWidth - 12);
+        valueAt(details.band, innerLeft + nameWidth, value2, innerWidth - nameWidth);
+
+        return bottom - 12;
+    }
+
+    function heightOf(top, bottom) {
+        return top - bottom;
+    }
+
     function footerCommands(index, count) {
         var commands = [];
         var label = (index + 1) + " of " + count;
@@ -262,8 +344,11 @@
             y -= 22;
             if (sheet.instrument) {
                 showCenter(commands, sheet.instrument, y, "F2", 14, NAVY);
-                y -= 20;
+                y -= 16;
+            } else {
+                y -= 4;
             }
+            y = drawCandidate(commands, sheet.candidate, y);
             LEGEND.forEach(function (line) {
                 show(commands, line, LEFT, y, "F1", 9, MUTED);
                 y -= 12;
@@ -447,7 +532,47 @@
                 articulation: row.getAttribute("data-articulation") || ""
             });
         });
-        return { instrument: instrument, rows: rows };
+        return {
+            instrument: instrument,
+            candidate: {
+                number: fieldValue("candidateNumber"),
+                rank: fieldValue("candidateRank"),
+                name: fieldValue("candidateName"),
+                date: formatDate(fieldValue("candidateDate")),
+                band: fieldValue("candidateBand")
+            },
+            rows: rows
+        };
+    }
+
+    function fieldValue(id) {
+        var field = document.getElementById(id);
+        if (!field || field.value == null) {
+            return "";
+        }
+        return String(field.value).replace(/\s+/g, " ").trim();
+    }
+
+    function formatDate(value) {
+        var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+        if (!match) {
+            return value;
+        }
+        var year = Number(match[1]);
+        var month = Number(match[2]);
+        var day = Number(match[3]);
+        var months = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        if (month < 1 || month > 12) {
+            return value;
+        }
+        var parsed = new Date(Date.UTC(year, month - 1, day));
+        if (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) {
+            return value;
+        }
+        return day + " " + months[month - 1] + " " + year;
     }
 
     function downloadName(sheet) {

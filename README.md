@@ -2,7 +2,7 @@
 
 A one-page tool for building an ARB Class 3 scale list at the Royal Military School of Music. It covers brass, woodwind and percussion.
 
-You choose an instrument and press **Generate Scales**. The page lists the scales and arpeggios for that instrument. Each line has a starting note, a range, a tempo and an articulation. **Download PDF** saves that same list as an A4 PDF.
+You choose an instrument, fill in the candidate’s number, rank, name, band and date, and press **Generate Scales**. The page lists the scales and arpeggios for that instrument. Each line has a starting note, a range, a tempo and an articulation. **Download PDF** saves that same list as an A4 PDF, with those five details in a header at the top.
 
 The notes, ranges, tempi and articulations come from `Database-v5.js`. The page does not change that list.
 
@@ -18,9 +18,10 @@ Keep these files together. The page loads `styles.css`, `app.js`, `download-pdf.
 ## How to use it
 
 1. Choose an instrument. The list is grouped into woodwind, brass and percussion.
-2. Press **Generate Scales**.
-3. Read the list from the top. Play each line with the articulation and tempo shown there. Scales and 7ths are in crotchet beats. Arpeggios are in dotted crotchet beats. Dominant 7ths resolve to the tonic, with the leading note rising to the tonic.
-4. Press **Download PDF**. That saves an A4 PDF of the same list. Open it in any PDF viewer, or print it.
+2. Fill in Number, Rank, Name, Date and Band. These can be entered before or after the list is generated.
+3. Press **Generate Scales**.
+4. Read the list from the top. Play each line with the articulation and tempo shown there. Scales and 7ths are in crotchet beats. Arpeggios are in dotted crotchet beats. Dominant 7ths resolve to the tonic, with the leading note rising to the tonic.
+5. Press **Download PDF**. That saves an A4 PDF of the same list. The number, rank, name, date and band are printed in a header above the scales. Open it in any PDF viewer, or print it.
 
 The page also lists the performance requirements under the scale list. Those stay on the page. They are not written into the PDF.
 
