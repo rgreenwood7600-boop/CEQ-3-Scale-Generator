@@ -8,9 +8,13 @@
  *
  * The PDF is the scale list, with the candidate's number, rank, name,
  * date and band in a header above the scales. Each exercise has its
- * note, range, articulation and tempo. There are no form fields and
- * no mark, comment or signature boxes. Performance requirements stay
- * on the page and are not written into the file.
+ * note, range, articulation and tempo, then three mark boxes: 1, ½
+ * and 0. Those boxes are one radio group per scale, so the examiner
+ * can tick a mark in a PDF viewer, and they still print as empty
+ * boxes. A total out of 20 sits under the list. Viewers that run form
+ * calculations fill that total in. Others leave a box to type in.
+ * Performance requirements stay on the page and are not written into
+ * the file.
  */
 
 (function () {
@@ -23,6 +27,14 @@
     var ROW = 16;
     var HEADING = 15;
     var GROUP_GAP = 4;
+    var BOX = 11;
+    var MARK_LABEL = 9;
+    var MARK_LABEL_GAP = 2.2;
+    var MARK_GROUP_GAP = 7;
+    var BOX_DROP = 1.5;
+    var TOTAL_W = 42;
+    var TOTAL_H = 16;
+    var TOTAL_OUT_OF = 20;
 
     var NAVY = "0 0.129 0.278";
     var INK = "0.110 0.141 0.188";
@@ -33,7 +45,7 @@
         { label: "Note", x: LEFT },
         { label: "Octaves", x: LEFT + 112 },
         { label: "Tempo", x: LEFT + 236 },
-        { label: "Articulation", x: LEFT + 372 }
+        { label: "Articulation", x: LEFT + 308 }
     ];
 
     var LEGEND = [
@@ -56,11 +68,11 @@
         "i": 222, "j": 222, "k": 500, "l": 222, "m": 833, "n": 556, "o": 556, "p": 556,
         "q": 556, "r": 333, "s": 500, "t": 278, "u": 556, "v": 500, "w": 722, "x": 500,
         "y": 500, "z": 500,
-        "\u00B7": 278
+        "\u00B7": 278, "\u00BD": 834
     };
 
     var BOLD = {
-        " ": 278, "#": 556, ",": 278, "-": 333, ".": 278, "/": 278,
+        " ": 278, "#": 556, ",": 278, "-": 333, ".": 278, "/": 278, ":": 333,
         "0": 556, "1": 556, "2": 556, "3": 556, "4": 556, "5": 556, "6": 556, "7": 556,
         "8": 556, "9": 556,
         "A": 722, "B": 722, "C": 722, "D": 722, "E": 667, "F": 611, "G": 778, "H": 722,
@@ -71,7 +83,7 @@
         "i": 278, "j": 278, "k": 556, "l": 278, "m": 889, "n": 611, "o": 611, "p": 611,
         "q": 611, "r": 389, "s": 556, "t": 333, "u": 611, "v": 556, "w": 778, "x": 556,
         "y": 556, "z": 500,
-        "\u00B7": 278
+        "\u00B7": 278, "\u00BD": 834
     };
 
     function num(value) {
@@ -96,6 +108,8 @@
                 out += "\\)";
             } else if (code === 0x00B7) {
                 out += "\\267";
+            } else if (code === 0x00BD) {
+                out += "\\275";
             } else if (code >= 32 && code <= 126) {
                 out += ch;
             } else {
@@ -246,10 +260,80 @@
         commands.push("EMC");
     }
 
+    /*
+     * Three mark choices, right-aligned: 1, ½ and 0, each with a small box.
+     * The boxes are also form widgets. Drawing them here means a print, or a
+     * viewer that skips annotations, still shows an empty box to tick.
+     */
+    function markLayout() {
+        var choices = [
+            { text: "1", exportName: "1" },
+            { text: "\u00BD", exportName: "H" },
+            { text: "0", exportName: "0" }
+        ];
+        var groups = choices.map(function (choice) {
+            return {
+                text: choice.text,
+                exportName: choice.exportName,
+                labelWidth: textWidth(choice.text, MARK_LABEL, true),
+                width: textWidth(choice.text, MARK_LABEL, true) + MARK_LABEL_GAP + BOX
+            };
+        });
+        var width = groups[0].width + groups[1].width + groups[2].width + MARK_GROUP_GAP * 2;
+        var x = RIGHT - width;
+        var positions = groups.map(function (group, index) {
+            if (index) {
+                x += MARK_GROUP_GAP;
+            }
+            var placed = {
+                text: group.text,
+                exportName: group.exportName,
+                labelX: x,
+                boxX: x + group.labelWidth + MARK_LABEL_GAP
+            };
+            x += group.width;
+            return placed;
+        });
+        return { left: RIGHT - width, width: width, positions: positions };
+    }
+
+    function drawFrame(commands, x, y, w, h) {
+        commands.push("q");
+        commands.push("1 1 1 rg");
+        commands.push(num(x) + " " + num(y) + " " + num(w) + " " + num(h) + " re");
+        commands.push("f");
+        commands.push(NAVY + " RG");
+        commands.push("1.15 w");
+        commands.push(num(x + 0.9) + " " + num(y + 0.9) + " " + num(w - 1.8) + " " + num(h - 1.8) + " re");
+        commands.push("S");
+        commands.push("Q");
+    }
+
+    function boxRect(boxX, baseline) {
+        var bottom = baseline - BOX_DROP;
+        return [boxX, bottom, boxX + BOX, bottom + BOX];
+    }
+
+    function drawMarkChoices(commands, baseline) {
+        var layout = markLayout();
+        var options = [];
+        layout.positions.forEach(function (pos) {
+            var rect = boxRect(pos.boxX, baseline);
+            show(commands, pos.text, pos.labelX, baseline, "F2", MARK_LABEL, NAVY);
+            drawFrame(commands, rect[0], rect[1], BOX, BOX);
+            options.push({ exportName: pos.exportName, rect: rect });
+        });
+        return options;
+    }
+
     function drawColumnHeader(commands, y) {
+        var layout = markLayout();
+        var markLabel = "Mark";
+        var markWidth = textWidth(markLabel, 9, true);
         COLS.forEach(function (col) {
             show(commands, col.label, col.x, y, "F2", 9, NAVY);
         });
+        show(commands, markLabel, layout.left + (layout.width - markWidth) / 2, y, "F2", 9, NAVY);
         hLine(commands, LEFT, RIGHT, y - 5, 0.9, NAVY);
         return y - 18;
     }
@@ -324,11 +408,41 @@
         return commands;
     }
 
+    function markTooltip(row) {
+        var parts = [];
+        if (row.note) {
+            parts.push(row.note);
+        }
+        if (row.discipline) {
+            parts.push(row.discipline);
+        }
+        var what = parts.length ? parts.join(" ") : "this scale";
+        return "Mark for " + what + ". Choose 1, half or 0.";
+    }
+
+    function drawTotal(commands, baseline) {
+        var label = "Total:";
+        var denom = "/ " + TOTAL_OUT_OF;
+        var size = 12;
+        var gap = 8;
+        var denomX = RIGHT - textWidth(denom, size, true);
+        var boxX = denomX - gap - TOTAL_W;
+        var labelX = boxX - gap - textWidth(label, size, true);
+        var boxBottom = baseline - 4;
+        show(commands, label, labelX, baseline, "F2", size, NAVY);
+        drawFrame(commands, boxX, boxBottom, TOTAL_W, TOTAL_H);
+        show(commands, denom, denomX, baseline, "F2", size, NAVY);
+        return [boxX, boxBottom, boxX + TOTAL_W, boxBottom + TOTAL_H];
+    }
+
     function renderPages(sheet) {
         var pages = [];
         var commands = [];
         var y = 0;
+        var pageIndex = 0;
         var lastDiscipline = null;
+        var marks = [];
+        var totalField = null;
 
         function startFirstPage() {
             commands = [];
@@ -359,6 +473,7 @@
 
         function startNextPage() {
             pages.push(commands);
+            pageIndex = pages.length;
             commands = [];
             y = PAGE_H - 46;
             show(commands, "ARB Class 3 Scales", LEFT, y, "F2", 12, NAVY);
@@ -407,19 +522,84 @@
                 show(commands, row.note || "", COLS[0].x, y, "F1", BODY, INK);
                 show(commands, row.range || "", COLS[1].x, y, "F1", BODY, INK);
                 drawTempo(commands, row.tempo || "", COLS[2].x, y);
-                show(commands, row.articulation || "", COLS[3].x, y, "F1", BODY, INK);
+                var articulationRoom = markLayout().left - COLS[3].x - 14;
+                var articulation = fitText(row.articulation || "", articulationRoom, BODY, false);
+                show(commands, articulation.text, COLS[3].x, y, "F1", articulation.size, INK);
+                marks.push({
+                    name: "Mark" + (marks.length + 1),
+                    page: pageIndex,
+                    tooltip: markTooltip(row),
+                    options: drawMarkChoices(commands, y)
+                });
             }
             y -= ROW;
         });
 
+        if ((sheet.rows || []).length) {
+            /* The box hangs 4pt below the total's baseline. Keep that above the footer rule. */
+            if (y - 28 < 50) {
+                startNextPage();
+            }
+            y -= 6;
+            hLine(commands, LEFT, RIGHT, y, 0.9, NAVY);
+            y -= 18;
+            totalField = {
+                page: pageIndex,
+                rect: drawTotal(commands, y)
+            };
+        }
+
         pages.push(commands);
         var count = pages.length;
-        return pages.map(function (page, index) {
-            return page.concat(footerCommands(index, count)).join("\n");
-        });
+        return {
+            streams: pages.map(function (page, index) {
+                return page.concat(footerCommands(index, count)).join("\n");
+            }),
+            marks: marks,
+            total: totalField
+        };
     }
 
-    function assemblePdf(streams, title) {
+    function totalScript(count) {
+        return "var total=0;for(var i=1;i<=" + count + ";i++){var field=this.getField(\"Mark\"+i);if(field==null)continue;var value=field.value;if(value==\"1\")total+=1;else if(value==\"H\")total+=0.5;}total=Math.round(total*2)/2;event.value=(total%1==0)?String(total):total.toFixed(1);";
+    }
+
+    function frameAppearance(width, height, ticked) {
+        var lines = [
+            "q",
+            "1 1 1 rg",
+            "0 0 " + num(width) + " " + num(height) + " re",
+            "f",
+            NAVY + " RG",
+            "1.15 w",
+            "0.9 0.9 " + num(width - 1.8) + " " + num(height - 1.8) + " re",
+            "S"
+        ];
+        if (ticked) {
+            var scale = width / BOX;
+            lines.push(INK + " RG");
+            lines.push("1.75 w");
+            lines.push("1 J");
+            lines.push("1 j");
+            lines.push(num(2.2 * scale) + " " + num(5.35 * scale) + " m");
+            lines.push(num(4.35 * scale) + " " + num(2.95 * scale) + " l");
+            lines.push(num(8.85 * scale) + " " + num(8.55 * scale) + " l");
+            lines.push("S");
+        }
+        lines.push("Q");
+        return lines.join("\n") + "\n";
+    }
+
+    /*
+     * Pages, then one radio group per scale (a parent field and three
+     * widgets), then the total text field. Appearance streams are shared:
+     * an empty box, and the same box with a tick. The total's calculation
+     * reads the radio values. 1 scores 1 and the half mark scores 0.5.
+     */
+    function assemblePdf(rendered, title) {
+        var streams = rendered.streams;
+        var marks = rendered.marks || [];
+        var total = rendered.total;
         var encoder = new TextEncoder();
         var parts = [];
 
@@ -428,11 +608,11 @@
         }
 
         function lengthSoFar() {
-            var total = 0;
+            var totalLength = 0;
             for (var i = 0; i < parts.length; i += 1) {
-                total += parts[i].length;
+                totalLength += parts[i].length;
             }
-            return total;
+            return totalLength;
         }
 
         push("%PDF-1.6\n%\xFF\xFF\xFF\xFF\n");
@@ -443,35 +623,187 @@
             push(body);
         }
 
-        var pageCount = streams.length;
-        var firstPageId = 5;
-        var infoId = firstPageId + pageCount * 2;
-        var kids = [];
-        for (var p = 0; p < pageCount; p += 1) {
-            kids.push((firstPageId + p * 2) + " 0 R");
+        function addStreamObject(id, dict, stream) {
+            var bytes = encoder.encode(stream);
+            offsets.push(lengthSoFar());
+            push(id + " 0 obj\n<< " + dict + " /Length " + bytes.length + " >>\nstream\n");
+            parts.push(bytes);
+            push("\nendstream\nendobj\n");
         }
 
-        addObject("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
-        addObject("2 0 obj\n<< /Type /Pages /Count " + pageCount + " /Kids [" + kids.join(" ") + "] >>\nendobj\n");
-        addObject("3 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n");
-        addObject("4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>\nendobj\n");
+        var offAppearanceId = 5;
+        var onAppearanceId = 6;
+        var totalAppearanceId = 7;
+        var acroId = 8;
+        var unicodeId = 9;
+        var nextId = 10;
+        var pageCount = streams.length;
+        var pageIds = [];
+        var contentIds = [];
+        var p;
+        for (p = 0; p < pageCount; p += 1) {
+            pageIds.push(nextId);
+            nextId += 1;
+            contentIds.push(nextId);
+            nextId += 1;
+        }
+
+        var groups = marks.map(function (mark) {
+            var parentId = nextId;
+            nextId += 1;
+            var kidIds = mark.options.map(function () {
+                var kidId = nextId;
+                nextId += 1;
+                return kidId;
+            });
+            return { parentId: parentId, kidIds: kidIds, mark: mark };
+        });
+        var totalId = total ? nextId : 0;
+        if (total) {
+            nextId += 1;
+        }
+        var infoId = nextId;
+
+        var annots = pageIds.map(function () {
+            return [];
+        });
+        groups.forEach(function (group) {
+            group.kidIds.forEach(function (kidId) {
+                annots[group.mark.page].push(kidId);
+            });
+        });
+        if (total) {
+            annots[total.page].push(totalId);
+        }
+
+        var fieldRefs = groups.map(function (group) {
+            return group.parentId + " 0 R";
+        });
+        if (totalId) {
+            fieldRefs.push(totalId + " 0 R");
+        }
+        var pageRefs = pageIds.map(function (id) {
+            return id + " 0 R";
+        });
+
+        addObject("1 0 obj\n<< /Type /Catalog /Pages 2 0 R /AcroForm " + acroId + " 0 R >>\nendobj\n");
+        addObject("2 0 obj\n<< /Type /Pages /Count " + pageCount + " /Kids [" + pageRefs.join(" ") + "] >>\nendobj\n");
+        addObject(
+            "3 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica " +
+            "/Encoding /WinAnsiEncoding /ToUnicode " + unicodeId + " 0 R >>\nendobj\n"
+        );
+        addObject(
+            "4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold " +
+            "/Encoding /WinAnsiEncoding /ToUnicode " + unicodeId + " 0 R >>\nendobj\n"
+        );
+        addStreamObject(
+            offAppearanceId,
+            "/Type /XObject /Subtype /Form /FormType 1 /BBox [0 0 " + num(BOX) + " " + num(BOX) + "] /Resources << >>",
+            frameAppearance(BOX, BOX, false)
+        );
+        addStreamObject(
+            onAppearanceId,
+            "/Type /XObject /Subtype /Form /FormType 1 /BBox [0 0 " + num(BOX) + " " + num(BOX) + "] /Resources << >>",
+            frameAppearance(BOX, BOX, true)
+        );
+        addStreamObject(
+            totalAppearanceId,
+            "/Type /XObject /Subtype /Form /FormType 1 /BBox [0 0 " + num(TOTAL_W) + " " + num(TOTAL_H) + "] /Resources << >>",
+            frameAppearance(TOTAL_W, TOTAL_H, false)
+        );
+        addObject(
+            acroId + " 0 obj\n<< /Fields [" + fieldRefs.join(" ") + "] " +
+            (totalId ? "/CO [" + totalId + " 0 R] " : "") +
+            "/DR << /Font << /F1 3 0 R /F2 4 0 R >> >> " +
+            "/DA (/F1 12 Tf 0.110 0.141 0.188 rg) >>\nendobj\n"
+        );
+        addStreamObject(
+            unicodeId,
+            "/Type /CMap /CMapName /Adobe-Identity-UCS /CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >>",
+            [
+                "/CIDInit /ProcSet findresource begin",
+                "12 dict begin",
+                "begincmap",
+                "/CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >> def",
+                "/CMapName /Adobe-Identity-UCS def",
+                "/CMapType 2 def",
+                "1 begincodespacerange",
+                "<00> <FF>",
+                "endcodespacerange",
+                "1 beginbfrange",
+                "<20> <7E> <0020>",
+                "endbfrange",
+                "2 beginbfchar",
+                "<B7> <00B7>",
+                "<BD> <00BD>",
+                "endbfchar",
+                "endcmap",
+                "CMapName currentdict /CMap defineresource pop",
+                "end",
+                "end",
+                ""
+            ].join("\n")
+        );
 
         streams.forEach(function (stream, index) {
-            var pageId = firstPageId + index * 2;
-            var contentId = pageId + 1;
             var data = stream.endsWith("\n") ? stream : stream + "\n";
             var bytes = encoder.encode(data);
+            var annotList = annots[index];
+            var annotPart = annotList.length
+                ? "/Annots [" + annotList.map(function (id) { return id + " 0 R"; }).join(" ") + "] /Tabs /A "
+                : "";
             addObject(
-                pageId + " 0 obj\n<< /Type /Page /Parent 2 0 R " +
+                pageIds[index] + " 0 obj\n<< /Type /Page /Parent 2 0 R " +
                 "/MediaBox [0 0 595.28 841.89] " +
                 "/Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> " +
-                "/Contents " + contentId + " 0 R >>\nendobj\n"
+                "/Contents " + contentIds[index] + " 0 R " +
+                annotPart +
+                ">>\nendobj\n"
             );
             offsets.push(lengthSoFar());
-            push(contentId + " 0 obj\n<< /Length " + bytes.length + " >>\nstream\n");
+            push(contentIds[index] + " 0 obj\n<< /Length " + bytes.length + " >>\nstream\n");
             parts.push(bytes);
             push("\nendstream\nendobj\n");
         });
+
+        groups.forEach(function (group) {
+            var mark = group.mark;
+            addObject(
+                group.parentId + " 0 obj\n<< /FT /Btn /Ff 32768 " +
+                "/T (" + pdfEscape(mark.name) + ") " +
+                "/TU (" + pdfEscape(mark.tooltip) + ") " +
+                "/V /Off " +
+                "/Kids [" + group.kidIds.map(function (id) { return id + " 0 R"; }).join(" ") + "] >>\nendobj\n"
+            );
+            group.kidIds.forEach(function (kidId, index) {
+                var option = mark.options[index];
+                addObject(
+                    kidId + " 0 obj\n<< /Type /Annot /Subtype /Widget " +
+                    "/Parent " + group.parentId + " 0 R " +
+                    "/P " + pageIds[mark.page] + " 0 R " +
+                    "/Rect [" + option.rect.map(num).join(" ") + "] " +
+                    "/F 4 /AS /Off " +
+                    "/AP << /N << /Off " + offAppearanceId + " 0 R /" + option.exportName + " " + onAppearanceId + " 0 R >> >> " +
+                    "/MK << /BG [1 1 1] /BC [0 0.129 0.278] >> " +
+                    "/BS << /W 1 /S /S >> >>\nendobj\n"
+                );
+            });
+        });
+
+        if (total) {
+            addObject(
+                totalId + " 0 obj\n<< /Type /Annot /Subtype /Widget /FT /Tx /Ff 4194304 " +
+                "/T (TotalMark) /TU (Total mark out of " + TOTAL_OUT_OF + ") " +
+                "/P " + pageIds[total.page] + " 0 R " +
+                "/Rect [" + total.rect.map(num).join(" ") + "] " +
+                "/F 4 /V () /Q 1 /MaxLen 5 " +
+                "/DA (/F1 12 Tf 0.110 0.141 0.188 rg) " +
+                "/MK << /BG [1 1 1] /BC [0 0.129 0.278] >> " +
+                "/BS << /W 1 /S /S >> " +
+                "/AP << /N " + totalAppearanceId + " 0 R >> " +
+                "/AA << /C << /S /JavaScript /JS (" + pdfEscape(totalScript(marks.length)) + ") >> >> >>\nendobj\n"
+            );
+        }
 
         addObject(
             infoId + " 0 obj\n<< /Title (" + pdfEscape(title) + ") " +
@@ -488,8 +820,8 @@
         xref += "startxref\n" + xrefAt + "\n%%EOF\n";
         push(xref);
 
-        var total = lengthSoFar();
-        var out = new Uint8Array(total);
+        var bytesOut = lengthSoFar();
+        var out = new Uint8Array(bytesOut);
         var offset = 0;
         for (var j = 0; j < parts.length; j += 1) {
             out.set(parts[j], offset);
