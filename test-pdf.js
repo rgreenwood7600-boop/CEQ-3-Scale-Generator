@@ -179,6 +179,9 @@ function testFullSheet() {
     assert(pdf.indexOf("Central Band") !== -1, "band missing");
     assert(pdf.indexOf("16 November 2026") !== -1, "date missing");
     assert(pdf.indexOf("Tenor Trombone Treble Clef") !== -1, "instrument missing");
+    assert(pdf.indexOf("(Articulation) Tj") !== -1, "articulation column was renamed");
+    assert(pdf.indexOf("Brass") !== -1 && pdf.indexOf("Woodwind") !== -1, "family subtitle missing");
+    assert(pdf.indexOf("(Bowing) Tj") === -1, "the wind sheet picked up the strings column");
     assert(pdf.indexOf("Legato Tongued") !== -1, "articulation missing");
     assert(pdf.indexOf("To the 12th") !== -1, "range missing");
     assert(pdf.indexOf("(Total:) Tj") !== -1, "Total label missing");

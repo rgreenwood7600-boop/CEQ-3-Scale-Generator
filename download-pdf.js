@@ -326,11 +326,11 @@
         return options;
     }
 
-    function drawColumnHeader(commands, y) {
+    function drawColumnHeader(commands, y, columns) {
         var layout = markLayout();
         var markLabel = "Mark";
         var markWidth = textWidth(markLabel, 9, true);
-        COLS.forEach(function (col) {
+        columns.forEach(function (col) {
             show(commands, col.label, col.x, y, "F2", 9, NAVY);
         });
         show(commands, markLabel, layout.left + (layout.width - markWidth) / 2, y, "F2", 9, NAVY);
@@ -435,6 +435,34 @@
         return [boxX, boxBottom, boxX + TOTAL_W, boxBottom + TOTAL_H];
     }
 
+    /*
+     * Wind and percussion sheets use the built-in columns, subtitle and
+     * legend. A strings sheet can pass its own. Leaving them off keeps
+     * the brass, woodwind and percussion PDF as it is.
+     */
+    function sheetLayout(sheet) {
+        var columns = COLS;
+        var subtitle = "Brass \u00B7 Woodwind \u00B7 Percussion";
+        var legend = LEGEND;
+        if (sheet && sheet.columns) {
+            columns = sheet.columns;
+        } else if (sheet && sheet.fourthColumn) {
+            columns = [
+                COLS[0],
+                COLS[1],
+                COLS[2],
+                { label: sheet.fourthColumn, x: COLS[3].x }
+            ];
+        }
+        if (sheet && sheet.subtitle) {
+            subtitle = sheet.subtitle;
+        }
+        if (sheet && sheet.legend) {
+            legend = sheet.legend;
+        }
+        return { columns: columns, subtitle: subtitle, legend: legend };
+    }
+
     function renderPages(sheet) {
         var pages = [];
         var commands = [];
@@ -443,6 +471,7 @@
         var lastDiscipline = null;
         var marks = [];
         var totalField = null;
+        var layout = sheetLayout(sheet);
 
         function startFirstPage() {
             commands = [];
@@ -454,7 +483,7 @@
             hLine(commands, LEFT, RIGHT, y, 1.5, NAVY);
             hLine(commands, LEFT, RIGHT, y - 3.2, 0.8, GOLD);
             y -= 20;
-            showCenter(commands, "Brass \u00B7 Woodwind \u00B7 Percussion", y, "F1", 11, MUTED);
+            showCenter(commands, layout.subtitle, y, "F1", 11, MUTED);
             y -= 22;
             if (sheet.instrument) {
                 showCenter(commands, sheet.instrument, y, "F2", 14, NAVY);
@@ -463,12 +492,12 @@
                 y -= 4;
             }
             y = drawCandidate(commands, sheet.candidate, y);
-            LEGEND.forEach(function (line) {
+            layout.legend.forEach(function (line) {
                 show(commands, line, LEFT, y, "F1", 9, MUTED);
                 y -= 12;
             });
             y -= 8;
-            y = drawColumnHeader(commands, y);
+            y = drawColumnHeader(commands, y, layout.columns);
         }
 
         function startNextPage() {
@@ -484,7 +513,7 @@
             y -= 8;
             hLine(commands, LEFT, RIGHT, y, 0.9, NAVY);
             y -= 20;
-            y = drawColumnHeader(commands, y);
+            y = drawColumnHeader(commands, y, layout.columns);
         }
 
         function ensure(height, repeatHeading) {
@@ -519,12 +548,12 @@
             if (row.missing) {
                 show(commands, row.message || "", LEFT, y, "F1", BODY, MUTED);
             } else {
-                show(commands, row.note || "", COLS[0].x, y, "F1", BODY, INK);
-                show(commands, row.range || "", COLS[1].x, y, "F1", BODY, INK);
-                drawTempo(commands, row.tempo || "", COLS[2].x, y);
-                var articulationRoom = markLayout().left - COLS[3].x - 14;
+                show(commands, row.note || "", layout.columns[0].x, y, "F1", BODY, INK);
+                show(commands, row.range || "", layout.columns[1].x, y, "F1", BODY, INK);
+                drawTempo(commands, row.tempo || "", layout.columns[2].x, y);
+                var articulationRoom = markLayout().left - layout.columns[3].x - 14;
                 var articulation = fitText(row.articulation || "", articulationRoom, BODY, false);
-                show(commands, articulation.text, COLS[3].x, y, "F1", articulation.size, INK);
+                show(commands, articulation.text, layout.columns[3].x, y, "F1", articulation.size, INK);
                 marks.push({
                     name: "Mark" + (marks.length + 1),
                     page: pageIndex,
@@ -914,8 +943,21 @@
         return instrument ? "ARB-Class-3-Scales-" + instrument + ".pdf" : "ARB-Class-3-Scales.pdf";
     }
 
-    function downloadScaleSheet() {
+    function downloadScaleSheet(options) {
         var sheet = readSheetFromPage();
+        var extra = options || {};
+        if (extra.subtitle) {
+            sheet.subtitle = extra.subtitle;
+        }
+        if (extra.legend) {
+            sheet.legend = extra.legend;
+        }
+        if (extra.columns) {
+            sheet.columns = extra.columns;
+        }
+        if (extra.fourthColumn) {
+            sheet.fourthColumn = extra.fourthColumn;
+        }
         if (!sheet.rows.length) {
             var error = new Error("Generate a scale list before downloading the PDF.");
             error.name = "ScaleSheetError";
