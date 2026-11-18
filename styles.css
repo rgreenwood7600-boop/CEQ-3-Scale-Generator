@@ -80,6 +80,23 @@ body {
     font-size: 1.05rem;
 }
 
+.page-link {
+    margin: 8px 0 0;
+    text-align: center;
+    font-size: 0.98rem;
+}
+
+.page-link a {
+    color: var(--navy-bright);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.page-link a:hover {
+    color: var(--navy);
+}
+
 .toolbar {
     display: flex;
     flex-direction: column;
@@ -164,6 +181,7 @@ button:focus-visible,
 select:focus-visible,
 .details-grid input:focus-visible,
 .table-scroll:focus-visible,
+.page-link a:focus-visible,
 .skip-link:focus {
     outline: 3px solid var(--focus);
     outline-offset: 2px;
@@ -322,6 +340,11 @@ h2 {
 .scale-table th,
 .scale-table td {
     white-space: nowrap;
+}
+
+.scale-table tr[data-note] td.cell-bowing,
+.scale-table tr[data-note] td.cell-note {
+    white-space: normal;
 }
 
 .requirements {

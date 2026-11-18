@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Build an ARB Class 3 scale list for violin, viola, cello and double bass at the Royal Military School of Music, with the candidate’s number, rank, name, band and date.">
+<meta name="theme-color" content="#002147">
+<meta name="color-scheme" content="light">
+<title>RMSM ARB Class 3 Scales — Strings</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23002147'/%3E%3Crect x='6' y='23' width='20' height='3' fill='%23c4a35a'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css?v=11">
+</head>
+<body>
+
+<a class="skip-link" href="#scales">Skip to the scales</a>
+
+<div class="sheet">
+
+<header class="sheet-header">
+<p class="eyebrow">The Royal Military School of Music</p>
+<h1>ARB Class 3 Scales</h1>
+<p class="subtitle">Strings</p>
+<p class="page-link"><a href="index.html">Brass, woodwind and percussion</a></p>
+</header>
+
+<div class="toolbar">
+<div class="controls-row">
+<div class="field">
+<label for="instrument">Instrument</label>
+<select id="instrument"></select>
+</div>
+<div class="actions">
+<button type="button" id="generateButton">Generate Scales</button>
+<button type="button" id="downloadButton" class="secondary">Download PDF</button>
+</div>
+</div>
+<p class="download-note">Download PDF saves this list for A4. Number, rank, name, band and date appear in a header at the top. Each line has the scale, its bowing and its tempo, then boxes for a mark of 1, ½ or 0. The total is out of 20.</p>
+</div>
+
+<main id="main">
+
+<section class="details" aria-labelledby="detailsHeading">
+<h2 id="detailsHeading">Candidate details</h2>
+<div class="details-grid">
+<div class="field">
+<label for="candidateNumber">Number</label>
+<input id="candidateNumber" name="number" type="text" autocomplete="off" spellcheck="false">
+</div>
+<div class="field">
+<label for="candidateRank">Rank</label>
+<input id="candidateRank" name="rank" type="text" autocomplete="off" spellcheck="false">
+</div>
+<div class="field">
+<label for="candidateName">Name</label>
+<input id="candidateName" name="name" type="text" autocomplete="name">
+</div>
+<div class="field">
+<label for="candidateDate">Date</label>
+<input id="candidateDate" name="date" type="date">
+</div>
+<div class="field field-band">
+<label for="candidateBand">Band</label>
+<input id="candidateBand" name="band" type="text" autocomplete="organization">
+</div>
+</div>
+</section>
+
+<p class="tempo-note">Play from the top. Scales, chromatic scales, double stops and 7ths are in crotchet beats (♩ = BPM). Arpeggios are in dotted crotchet beats (♩. = BPM). Dominant 7ths resolve to the tonic, with the leading note rising to the tonic. Play the bowing shown on each line.</p>
+
+<section class="block" id="scales" aria-labelledby="scalesHeading">
+<h2 id="scalesHeading">Scales</h2>
+<p id="resultInstrument" class="result-instrument" hidden></p>
+<div class="table-scroll" tabindex="0" aria-labelledby="scalesHeading">
+<table class="scale-table" id="scaleTable">
+<caption class="visually-hidden">Generated scales, each with its range, tempo and bowing.</caption>
+<colgroup>
+<col class="col-note">
+<col class="col-octaves">
+<col class="col-tempo">
+<col class="col-articulation">
+</colgroup>
+<thead>
+<tr>
+<th scope="col">Note</th>
+<th scope="col">Octaves</th>
+<th scope="col">Tempo</th>
+<th scope="col">Bowing</th>
+</tr>
+</thead>
+<tbody id="assessmentBody">
+<tr>
+<td class="empty" colspan="4">Choose an instrument, then press Generate Scales.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section class="requirements" aria-labelledby="requirementsHeading">
+<details open>
+<summary>
+<h2 id="requirementsHeading">Performance Requirements</h2>
+</summary>
+<ol type="a">
+<li>Scales and arpeggios are to be performed from memory, at the tempo indicated and with the bowing shown on the list.</li>
+<li>Candidates must not perform the scales and arpeggios over a greater range than stipulated.</li>
+<li>Candidates should react promptly to the scale/arpeggio being asked, without the need to ‘practice’ or run through the fingering prior to performing.</li>
+<li>Single-note scales are played as quavers. Violin, viola and cello: separate bows, or slurred with one octave to a bow. Double bass: pizzicato, separate bows, or slurred two beats to a bow.</li>
+<li>Major and minor arpeggios are played as quavers at the dotted-crotchet tempo. Violin, viola and cello may slur 3 or 9 notes to a bow, at the candidate’s choice. Double bass: pizzicato, separate bows, or slurred one beat to a bow.</li>
+<li>Chromatic scales on violin, viola and cello: separate bows, or slurred 6 or 12 notes to a bow at the candidate’s choice. Double bass: pizzicato, or three beats to a bow.</li>
+<li>All scales are to start on the tonic and arpeggios are to be played in root position.</li>
+<li>Scales and arpeggios are to ascend and descend, starting on the lowest possible key note (unless otherwise indicated).</li>
+<li>Dominant 7ths are played in the stipulated key and resolve on to the tonic, with the leading note rising to the tonic. Violin, viola and cello may slur 4 or 8 notes to a bow, at the candidate’s choice. Double bass: pizzicato, separate bows, or slurred two beats to a bow.</li>
+<li>Diminished 7ths start on the stipulated note, with the same choice of bowing as dominant 7ths.</li>
+<li>Double-stopped scales use the bowing on that line. 6ths are separate bows. Violin and viola octaves are separate bows, and 3rds are slurred with repeated notes. Cello octaves and 3rds are broken steps. Double bass octave scales are separate bows or pizzicato only. Viola and double bass scales and arpeggios are played with even notes.</li>
+</ol>
+</details>
+</section>
+
+</main>
+
+<footer class="sheet-footer">
+<p>RMSM ARB Class 3 Scales Generator<br>Version 5.2</p>
+</footer>
+
+</div>
+
+<p id="status" class="visually-hidden no-print" role="status"></p>
+
+<noscript>
+<p class="noscript">JavaScript is turned off, so a scale list cannot be built. Turn JavaScript on, then reload this page.</p>
+</noscript>
+
+<script src="Database-strings.js?v=1"></script>
+<script src="download-pdf.js?v=9"></script>
+<script src="strings-app.js?v=2"></script>
+</body>
+</html>
